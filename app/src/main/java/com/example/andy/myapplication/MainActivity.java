@@ -29,15 +29,7 @@ import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
 
-//    private final int KICK = 36;
-//    private final int SNARE = 38;
-//    private final int HIHAT_CLOSE = 42;
-//    private final int HIHAT_OPEN = 46;
-//    private MidiTrack tempoTrack;
-//    private MidiTrack noteTrack;
-//    private MidiFile midi;
-
-    MediaPlayer mediaPlayer;
+    private MediaPlayer mediaPlayer;
     private MidiPlayer midiPlayer;
 
     private final int REQ_CODE = 100;
@@ -73,80 +65,18 @@ public class MainActivity extends AppCompatActivity {
 
         // My Code
         secondParser = new SecondParser();
+
         midiPlayer = new MidiPlayer();
-
-
-
-//        /********************** MIDI *************************************/
-//        // 1. Create some MidiTracks
-////        tempoTrack = new MidiTrack();
-////        noteTrack = new MidiTrack();
-//
-//// 2. Add events to the tracks
-//// Track 0 is the tempo map
-//        TimeSignature ts = new TimeSignature();
-//        ts.setTimeSignature(4, 4, TimeSignature.DEFAULT_METER, TimeSignature.DEFAULT_DIVISION);
-//
-//        Tempo tempo = new Tempo();
-//        tempo.setBpm(120);
-//
-//        tempoTrack.insertEvent(ts);
-//        tempoTrack.insertEvent(tempo);
-//
-//
-//        noteTrack.insertNote(9, KICK, 100, 1, 140);
-//        noteTrack.insertNote(9, KICK, 100, 480, 140);
-//        noteTrack.insertNote(9, SNARE, 100, 480, 140);
-//        noteTrack.insertNote(9, KICK, 100, 2*480, 140);
-//        noteTrack.insertNote(9, KICK, 100, 3*480, 140);
-//
-//
-//// 3. Create a MidiFile with the tracks we created
-//        List<MidiTrack> tracks = new ArrayList<MidiTrack>();
-//        tracks.add(tempoTrack);
-//        tracks.add(noteTrack);
-//
-//        midi = new MidiFile(MidiFile.DEFAULT_RESOLUTION, tracks);
-//
-////// 4. Write the MIDI data to a file
-////        File output = new File(getApplicationContext().getFilesDir(), "exampleout.mid");
-////        File textFile = new File(getApplicationContext().getFilesDir(), "test.mid");
-////        try
-////        {
-////            midi.writeToFile(output);
-////            midi.writeToFile(textFile);
-////        }
-////        catch(IOException e)
-////        {
-////            System.err.println(e);
-////        }
         midiPlayer.writeToFile(this, midiPlayer.getMidi());
 
         mediaPlayer = new MediaPlayer();
-
-        loadFileIntoMediaPlayer();
-
-//        File file = getApplicationContext().getFileStreamPath("exampleout.mid");
-//        Uri uri = Uri.fromFile(file);
-//        try {
-//            mediaPlayer.setDataSource(getApplicationContext(), uri);
-//        } catch (Exception e) {
-//
-//        }
-//
-////        final MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.escape);
-//        try {
-//            mediaPlayer.prepare();
-//        } catch (Exception e) {
-//
-//        }
-//
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
                 mp.reset();
             }
         });
+
 
         Button button = findViewById(R.id.addButton);
         button.setOnClickListener(new View.OnClickListener() {
@@ -159,45 +89,16 @@ public class MainActivity extends AppCompatActivity {
                 mediaPlayer.start();
             }
         });
-
-
-        /*****************************************************************/
     }
 
-//    public void updateNoteTrack() {
-////        midi.getTracks().get(0).insertNote(9, SNARE, 100, 5*480, 140);
-//        MidiTrack tempoTrack = new MidiTrack();
-//        MidiTrack noteTrack = new MidiTrack();
-//        noteTrack.insertNote(9, MidiPlayer.SNARE, 100, 5*480, 140);
-//        List<MidiTrack> tracks = new ArrayList<MidiTrack>();
-//        tracks.add(tempoTrack);
-//        tracks.add(noteTrack);
-//        midi = new MidiFile(MidiFile.DEFAULT_RESOLUTION, tracks);
-//    }
-
-//    public void writeToFile(MidiFile midi) {
-//        // 4. Write the MIDI data to a file
-//        File output = new File(getApplicationContext().getFilesDir(), "exampleout.mid");
-//        try
-//        {
-//            midi.writeToFile(output);
-//        }
-//        catch(IOException e)
-//        {
-//            System.err.println(e);
-//        }
-//    }
-//
     public void loadFileIntoMediaPlayer() {
         File file = getApplicationContext().getFileStreamPath("exampleout.mid");
         Uri uri = Uri.fromFile(file);
         try {
             mediaPlayer.setDataSource(getApplicationContext(), uri);
         } catch (Exception e) {
-
+            // SORT THIS LATER!!!
         }
-
-//        final MediaPlayer mediaPlayer = MediaPlayer.create(this, R.raw.escape);
         try {
             mediaPlayer.prepare();
         } catch (Exception e) {
@@ -221,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
                     // My Code
                     String newResult = secondParser.parseInput(result.get(0));
                     textView.setText(newResult);
-
+                    loadFileIntoMediaPlayer();
                     mediaPlayer.start();
 
                 }

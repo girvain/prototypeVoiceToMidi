@@ -24,13 +24,12 @@ public class MidiPlayer {
     private MidiFile midi;
 
     public MidiPlayer() {
-        /********************** MIDI *************************************/
         // 1. Create some MidiTracks
         tempoTrack = new MidiTrack();
         noteTrack = new MidiTrack();
 
         // 2. Add events to the tracks
-// Track 0 is the tempo map
+        // Track 0 is the tempo map
         TimeSignature ts = new TimeSignature();
         ts.setTimeSignature(4, 4, TimeSignature.DEFAULT_METER, TimeSignature.DEFAULT_DIVISION);
 
@@ -40,7 +39,7 @@ public class MidiPlayer {
         tempoTrack.insertEvent(ts);
         tempoTrack.insertEvent(tempo);
 
-
+        // Temp data
         noteTrack.insertNote(9, KICK, 100, 1, 140);
         noteTrack.insertNote(9, KICK, 100, 480, 140);
         noteTrack.insertNote(9, SNARE, 100, 480, 140);
@@ -55,24 +54,10 @@ public class MidiPlayer {
 
         midi = new MidiFile(MidiFile.DEFAULT_RESOLUTION, tracks);
 
-        //// 4. Write the MIDI data to a file
-//        File output = new File(getApplicationContext().getFilesDir(), "exampleout.mid");
-//        File textFile = new File(getApplicationContext().getFilesDir(), "test.mid");
-//        try
-//        {
-//            midi.writeToFile(output);
-//            midi.writeToFile(textFile);
-//        }
-//        catch(IOException e)
-//        {
-//            System.err.println(e);
-//        }
-
-
     }
 
     public void updateNoteTrack() {
-//        midi.getTracks().get(0).insertNote(9, SNARE, 100, 5*480, 140);
+//        midi.getTracks().get(1).insertNote(9, SNARE, 100, 5*480, 140);
         MidiTrack tempoTrack = new MidiTrack();
         MidiTrack noteTrack = new MidiTrack();
         noteTrack.insertNote(9, SNARE, 100, 5 * 480, 140);
@@ -80,6 +65,15 @@ public class MidiPlayer {
         tracks.add(tempoTrack);
         tracks.add(noteTrack);
         midi = new MidiFile(MidiFile.DEFAULT_RESOLUTION, tracks);
+
+        /**
+         * Algo to copy a current midi file and add to it
+         * get a list of DrumComponents to loop thu
+         * if the component beats[] containts a "hit" (a '1' in the array),
+         * do a noteTrack.insertNote with drumComponent.getName (which could be KICK etc)
+         * and also in the .insertNote, drumComponent.getPosOfBeat
+         * which will need converted to the right tick
+         */
     }
 
     public void writeToFile(Context context, MidiFile midi) {
