@@ -9,7 +9,16 @@
         android:layout_width="match_parent"
         android:gravity="center"
         android:layout_height="match_parent">
-    <TextView
+
+        <Button
+            android:id="@+id/addButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_weight="1"
+            android:text="add Kick" />
+
+        <TextView
         android:id="@+id/text"
         android:textSize="30sp"
         android:layout_width="wrap_content"

@@ -1,0 +1,8 @@
+#+title: TODO list for beatBot app
+* TODO Make voice command parser
+* TODO Make MIDI Object creator
+  - [ ] Object Factory for the objects
+  - [ ] File or object CRUD features
+  - [ ] Method for converting required beat to tick
+  - [ ] edit tempo method
+* TODO Figure out how to get a representation of a MIDI file in order to copy and add to it.
