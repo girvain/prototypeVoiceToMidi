@@ -56,6 +56,10 @@ public class MidiPlayer {
 
     }
 
+    /**
+     * Method to create a midi file from a DrumtrackData objects drumComponentList
+     */
+
     public void updateNoteTrack() {
 //        midi.getTracks().get(1).insertNote(9, SNARE, 100, 5*480, 140);
         MidiTrack tempoTrack = new MidiTrack();
