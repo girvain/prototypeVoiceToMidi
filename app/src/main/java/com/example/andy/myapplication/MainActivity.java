@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                midiPlayer.updateNoteTrack();
+                midiPlayer.convertDrumTrackDataToMidi();
                 midiPlayer.writeToFile(getApplicationContext(), midiPlayer.getMidi());
                 loadFileIntoMediaPlayer();
 

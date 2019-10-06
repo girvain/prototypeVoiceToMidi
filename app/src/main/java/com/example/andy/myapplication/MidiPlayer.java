@@ -23,6 +23,8 @@ public class MidiPlayer {
     private MidiTrack noteTrack;
     private MidiFile midi;
 
+    private DrumTrackData drumTrackData;
+
     public MidiPlayer() {
         // 1. Create some MidiTracks
         tempoTrack = new MidiTrack();
@@ -54,6 +56,16 @@ public class MidiPlayer {
 
         midi = new MidiFile(MidiFile.DEFAULT_RESOLUTION, tracks);
 
+
+        /****************? Dummy object data for testing *****************/
+        drumTrackData = new DrumTrackData();
+        drumTrackData.addDrumHit(DrumTrackData.KICK, 0);
+        drumTrackData.addDrumHit(DrumTrackData.KICK, 2);
+        drumTrackData.addDrumHit(DrumTrackData.KICK, 4);
+        drumTrackData.addDrumHit(DrumTrackData.KICK, 6);
+        drumTrackData.addDrumHit(DrumTrackData.SNARE, 2);
+        drumTrackData.addDrumHit(DrumTrackData.SNARE, 6);
+
     }
 
     /**
@@ -64,7 +76,12 @@ public class MidiPlayer {
 //        midi.getTracks().get(1).insertNote(9, SNARE, 100, 5*480, 140);
         MidiTrack tempoTrack = new MidiTrack();
         MidiTrack noteTrack = new MidiTrack();
-        noteTrack.insertNote(9, SNARE, 100, 5 * 480, 140);
+        noteTrack.insertNote(9, SNARE, 100, 0 * 480, 140);
+        noteTrack.insertNote(9, SNARE, 100, 1 * 480, 140);
+        noteTrack.insertNote(9, SNARE, 100, (2 * 480) + 220, 140);
+        noteTrack.insertNote(9, SNARE, 100, 2 * 480, 140);
+        noteTrack.insertNote(9, SNARE, 100, 3 * 480, 140);
+        noteTrack.insertNote(9, SNARE, 0, 5 * 480, 140);
         List<MidiTrack> tracks = new ArrayList<MidiTrack>();
         tracks.add(tempoTrack);
         tracks.add(noteTrack);
@@ -78,6 +95,27 @@ public class MidiPlayer {
          * and also in the .insertNote, drumComponent.getPosOfBeat
          * which will need converted to the right tick
          */
+    }
+
+    /**
+     * This method will most likely be called when the drumTrackData objects state changes
+     * @return
+     */
+    public void convertDrumTrackDataToMidi() {
+        MidiTrack tempoTrack = new MidiTrack();
+        MidiTrack noteTrack = new MidiTrack();
+
+        for (DrumComponent drumComponent : drumTrackData.getDrumComponentList()) {
+            for (int i = 0; i < drumComponent.getBeats().length; i++) {
+                if (drumComponent.getBeats()[i] == 1) {
+                    noteTrack.insertNote(9, drumComponent.getName(), 100, i*240, 140);
+                }
+            }
+        }
+        List<MidiTrack> tracks = new ArrayList<MidiTrack>();
+        tracks.add(tempoTrack);
+        tracks.add(noteTrack);
+        midi = new MidiFile(MidiFile.DEFAULT_RESOLUTION, tracks);
     }
 
     public void writeToFile(Context context, MidiFile midi) {
