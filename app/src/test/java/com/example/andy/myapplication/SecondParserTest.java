@@ -2,9 +2,8 @@ package com.example.andy.myapplication;
 
 import org.junit.Test;
 
-import java.util.ArrayList;
-
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class SecondParserTest {
     @Test
@@ -14,4 +13,17 @@ public class SecondParserTest {
 
         assertEquals("insert kick", sp.parseInput(testPhrase));
     }
+
+    @Test
+    public void testLowerCaseEntry() {
+        SecondParser sp = new SecondParser();
+        String testPhrase = "b1";
+
+        assertEquals("B1", sp.parseInput(testPhrase));
+    }
+    //    @Test
+//    public void parseVoiceCommandReturnsCommandData() {
+//        SecondParser secondParser = new SecondParser();
+//        assertNotNull(secondParser.convertToCommandData("insert kick"));
+//    }
 }

@@ -1,5 +1,7 @@
 package com.example.andy.myapplication;
 
+import android.util.Log;
+
 import java.util.ArrayList;
 
 /**
@@ -8,6 +10,7 @@ import java.util.ArrayList;
  */
 public class DrumTrackData {
 
+    static final int INSERT = 500;
     static final int KICK = 36;
     static final int SNARE = 38;
     static final int HIHAT_CLOSE = 42;
@@ -53,8 +56,33 @@ public class DrumTrackData {
         }
     }
 
+    public CommandData convertStringToCommandDataObj(String input) {
+        String[] parsedPhraseArray = input.split(" ");
+        CommandData commandData = new CommandData();
+        for (String word : parsedPhraseArray) {
+            if (word.equals("insert")) {
+                commandData.setCommand(INSERT);
+            }else if (word.equals("kick")){
+                commandData.setName(KICK);
+            } else if (word.equals("B1")) {
+                commandData.setPos(1);
+            }
+        }
+        return commandData;
+    }
 
+    public void processCommand(String input) {
 
+        try {
+            CommandData commandData = convertStringToCommandDataObj(input);
+            if (commandData.getCommand() == INSERT) {
+                addDrumHit(commandData.getName(), commandData.getPos());
+            }
+        } catch (Exception e) {
+            Log.e("DrumTrackData.class", e.toString());
+        }
+
+    }
 
 
 

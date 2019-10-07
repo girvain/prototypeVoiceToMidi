@@ -23,7 +23,7 @@ public class MidiPlayer {
     private MidiTrack noteTrack;
     private MidiFile midi;
 
-    private DrumTrackData drumTrackData;
+//    private DrumTrackData drumTrackData;
 
     public MidiPlayer() {
         // 1. Create some MidiTracks
@@ -57,14 +57,7 @@ public class MidiPlayer {
         midi = new MidiFile(MidiFile.DEFAULT_RESOLUTION, tracks);
 
 
-        /****************? Dummy object data for testing *****************/
-        drumTrackData = new DrumTrackData();
-        drumTrackData.addDrumHit(DrumTrackData.KICK, 0);
-        drumTrackData.addDrumHit(DrumTrackData.KICK, 2);
-        drumTrackData.addDrumHit(DrumTrackData.KICK, 4);
-        drumTrackData.addDrumHit(DrumTrackData.KICK, 6);
-        drumTrackData.addDrumHit(DrumTrackData.SNARE, 2);
-        drumTrackData.addDrumHit(DrumTrackData.SNARE, 6);
+
 
     }
 
@@ -101,7 +94,7 @@ public class MidiPlayer {
      * This method will most likely be called when the drumTrackData objects state changes
      * @return
      */
-    public void convertDrumTrackDataToMidi() {
+    public void convertDrumTrackDataToMidi(DrumTrackData drumTrackData) {
         MidiTrack tempoTrack = new MidiTrack();
         MidiTrack noteTrack = new MidiTrack();
 

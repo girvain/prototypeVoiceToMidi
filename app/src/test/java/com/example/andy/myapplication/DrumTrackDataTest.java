@@ -34,4 +34,25 @@ public class DrumTrackDataTest {
         drumTrackData.addDrumHit(DrumTrackData.SNARE, 5);
         assertFalse(drumTrackData.addDrumHit(DrumTrackData.SNARE, 5));
     }
+
+    @Test
+    public void convertStringToCommandDataReturnsCorrectObject() {
+        String testCommand = "insert kick B1";
+        CommandData convertStringToCommandDataResult =
+                drumTrackData.convertStringToCommandDataObj(testCommand);
+
+        assertEquals(convertStringToCommandDataResult.getCommand(), DrumTrackData.INSERT);
+        assertEquals(convertStringToCommandDataResult.getName(), DrumTrackData.KICK);
+        assertEquals(convertStringToCommandDataResult.getPos(), 1);
+
+    }
+
+    @Test
+    public void convertStringToCommandDataError() {
+        String testCommand = "insert cat B1";
+//        assertEquals(drumTrackData.convertStringToCommandDataObj(testCommand).getCommand(), DrumTrackData.INSERT);
+//        assertEquals(drumTrackData.convertStringToCommandDataObj(testCommand).getName(), DrumTrackData.KICK);
+//        assertEquals(drumTrackData.convertStringToCommandDataObj(testCommand).getPos(), 1);
+        assertNotNull(drumTrackData.convertStringToCommandDataObj(testCommand));
+    }
 }

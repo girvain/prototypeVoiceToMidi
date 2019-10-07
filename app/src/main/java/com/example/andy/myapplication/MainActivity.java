@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
 
     private MediaPlayer mediaPlayer;
     private MidiPlayer midiPlayer;
+    private DrumTrackData drumTrackData;
 
     private final int REQ_CODE = 100;
     TextView textView;
@@ -65,6 +66,16 @@ public class MainActivity extends AppCompatActivity {
 
         // My Code
         secondParser = new SecondParser();
+        drumTrackData = new DrumTrackData();
+
+        /****************? Dummy object data for testing *****************/
+//        drumTrackData = new DrumTrackData();
+//        drumTrackData.addDrumHit(DrumTrackData.KICK, 0);
+//        drumTrackData.addDrumHit(DrumTrackData.KICK, 2);
+//        drumTrackData.addDrumHit(DrumTrackData.KICK, 4);
+//        drumTrackData.addDrumHit(DrumTrackData.KICK, 6);
+//        drumTrackData.addDrumHit(DrumTrackData.SNARE, 2);
+//        drumTrackData.addDrumHit(DrumTrackData.SNARE, 6);
 
         midiPlayer = new MidiPlayer();
         midiPlayer.writeToFile(this, midiPlayer.getMidi());
@@ -82,11 +93,17 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                midiPlayer.convertDrumTrackDataToMidi();
-                midiPlayer.writeToFile(getApplicationContext(), midiPlayer.getMidi());
-                loadFileIntoMediaPlayer();
+//                midiPlayer.convertDrumTrackDataToMidi(drumTrackData);
+//                midiPlayer.writeToFile(getApplicationContext(), midiPlayer.getMidi());
+//                loadFileIntoMediaPlayer();
+//
+//                mediaPlayer.start();
 
-                mediaPlayer.start();
+//                drumTrackData.processCommand("insert kick B1");
+//                midiPlayer.convertDrumTrackDataToMidi(drumTrackData);
+//                midiPlayer.writeToFile(getApplicationContext(), midiPlayer.getMidi());
+//                loadFileIntoMediaPlayer();
+//                mediaPlayer.start();
             }
         });
     }
@@ -122,6 +139,13 @@ public class MainActivity extends AppCompatActivity {
                     // My Code
                     String newResult = secondParser.parseInput(result.get(0));
                     textView.setText(newResult);
+
+
+                    // This is the same as calling drumTrackData.addDrumHit but with voice input
+                    drumTrackData.processCommand(newResult);
+                    midiPlayer.convertDrumTrackDataToMidi(drumTrackData);
+                    midiPlayer.writeToFile(getApplicationContext(), midiPlayer.getMidi());
+
                     loadFileIntoMediaPlayer();
                     mediaPlayer.start();
 
