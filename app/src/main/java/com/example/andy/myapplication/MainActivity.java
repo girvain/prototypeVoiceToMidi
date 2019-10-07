@@ -104,6 +104,8 @@ public class MainActivity extends AppCompatActivity {
 //                midiPlayer.writeToFile(getApplicationContext(), midiPlayer.getMidi());
 //                loadFileIntoMediaPlayer();
 //                mediaPlayer.start();
+                loadFileIntoMediaPlayer();
+                mediaPlayer.start();
             }
         });
     }

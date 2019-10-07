@@ -9,6 +9,10 @@ public class CommandData {
     private int name; // kick, snare etc
     private int pos; // beat
 
+    CommandData() {
+        this.pos = -1; // pos needs a defualt value of -1 because the uninitialised default is 0
+    }
+
     public int getCommand() {
         return command;
     }

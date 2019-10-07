@@ -59,34 +59,82 @@ public class DrumTrackData {
     public CommandData convertStringToCommandDataObj(String input) {
         String[] parsedPhraseArray = input.split(" ");
         CommandData commandData = new CommandData();
+        boolean isBeat = false;
         for (String word : parsedPhraseArray) {
             if (word.equals("insert")) {
                 commandData.setCommand(INSERT);
-            }else if (word.equals("kick")){
+            } else if (word.equals("kick")) {
                 commandData.setName(KICK);
-            } else if (word.equals("B1")) {
-                commandData.setPos(1);
+            } else if (word.equals("beat")) {
+                isBeat = true;
+//                commandData.setPos(0);
+            } else if (isBeat) {
+                switch (word) {
+                    case "one":
+                        commandData.setPos(0);
+                        break;
+                    case "two":
+                        commandData.setPos(1);
+                        break;
+                    case "three":
+                        commandData.setPos(2);
+                        break;
+                    case "four":
+                        commandData.setPos(3);
+                        break;
+                    case "five":
+                        commandData.setPos(4);
+                        break;
+                    case "six":
+                        commandData.setPos(5);
+                        break;
+                    case "seven":
+                        commandData.setPos(6);
+                        break;
+                    case "eight":
+                        commandData.setPos(7);
+                        break;
+                    case "1":
+                        commandData.setPos(0);
+                        break;
+                    case "2":
+                        commandData.setPos(1);
+                        break;
+                    case "3":
+                        commandData.setPos(2);
+                        break;
+                    case "4":
+                        commandData.setPos(3);
+                        break;
+                    case "5":
+                        commandData.setPos(4);
+                        break;
+                    case "6":
+                        commandData.setPos(5);
+                        break;
+                    case "7":
+                        commandData.setPos(6);
+                        break;
+                    case "8":
+                        commandData.setPos(7);
+                        break;
+                    default:
+                        commandData.setPos(-1);// this is because the default uninitialised value is 0
+                }
             }
         }
         return commandData;
     }
 
     public void processCommand(String input) {
-
-        try {
-            CommandData commandData = convertStringToCommandDataObj(input);
-            if (commandData.getCommand() == INSERT) {
+        CommandData commandData = convertStringToCommandDataObj(input);
+        if (commandData.getCommand() == INSERT) {
+            if (commandData.getPos() != -1) {
                 addDrumHit(commandData.getName(), commandData.getPos());
             }
-        } catch (Exception e) {
-            Log.e("DrumTrackData.class", e.toString());
+
         }
-
     }
-
-
-
-
 
 
     public ArrayList<DrumComponent> getDrumComponentList() {

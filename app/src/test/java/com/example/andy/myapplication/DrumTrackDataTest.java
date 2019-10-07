@@ -37,13 +37,13 @@ public class DrumTrackDataTest {
 
     @Test
     public void convertStringToCommandDataReturnsCorrectObject() {
-        String testCommand = "insert kick B1";
+        String testCommand = "insert kick beat seven";
         CommandData convertStringToCommandDataResult =
                 drumTrackData.convertStringToCommandDataObj(testCommand);
 
         assertEquals(convertStringToCommandDataResult.getCommand(), DrumTrackData.INSERT);
         assertEquals(convertStringToCommandDataResult.getName(), DrumTrackData.KICK);
-        assertEquals(convertStringToCommandDataResult.getPos(), 1);
+        assertEquals(convertStringToCommandDataResult.getPos(), 6);
 
     }
 

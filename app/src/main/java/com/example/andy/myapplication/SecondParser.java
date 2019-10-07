@@ -33,17 +33,43 @@ class SecondParser {
                 newPhrase.add("insert");
             } else if (word.equals("cake")) {
                 newPhrase.add("kick");
-            } else if (word.equals("V1")) {
-                newPhrase.add("B1");
+            } else if (word.equals("B1")) {
+                newPhrase.add("beat");
+                newPhrase.add("one");
             } else if(word.equals("b1")) {
                 newPhrase.add("B1");
+            } else if (word.equals("B2")) {
+                newPhrase.add("beat");
+                newPhrase.add("two");
             }
+
             else {
                 newPhrase.add(word);
             }
         }
         String listString = String.join(" ", newPhrase);
         return listString;
+    }
+
+    public boolean insertSwitch(String word) {
+        switch (word) {
+            case "insert":
+                return true;
+            case "desert":
+                return true;
+            default:
+                return false;
+        }
+    }
+
+    public void specialCaseSwitch(String word) {
+        switch (word) {
+            case "insurtech":
+        }
+    }
+
+    public void beatSwitch(String word) {
+
     }
 
 //    public CommandData convertToCommandData(String input) {
