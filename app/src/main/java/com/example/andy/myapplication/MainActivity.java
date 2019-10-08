@@ -104,6 +104,9 @@ public class MainActivity extends AppCompatActivity {
 //                midiPlayer.writeToFile(getApplicationContext(), midiPlayer.getMidi());
 //                loadFileIntoMediaPlayer();
 //                mediaPlayer.start();
+
+                // button for playback of file, needs to load fresh from internal mem each time
+                // incase of any add/removes of notes from Midi file.
                 loadFileIntoMediaPlayer();
                 mediaPlayer.start();
             }

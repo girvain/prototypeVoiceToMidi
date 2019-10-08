@@ -3,6 +3,8 @@ package com.example.andy.myapplication;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.ArrayList;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
@@ -15,25 +17,55 @@ public class SecondParserTest {
         sp = new SecondParser();
     }
 
-    @Test
-    public void testKickConverter() {
-        String testPhrase = "insert tick";
+//    @Test
+//    public void testKickConverter() {
+//        String testPhrase = "insert tick";
+//
+//        assertEquals("insert kick", sp.parseInput(testPhrase));
+//    }
+//
+//    @Test
+//    public void testLowerCaseEntry() {
+//        String testPhrase = "b1";
+//
+//        assertEquals("B1", sp.parseInput(testPhrase));
+//    }
 
-        assertEquals("insert kick", sp.parseInput(testPhrase));
+
+    @Test
+    public void insertSwitchRetrunsCorrectValue() {
+        ArrayList<String> list = new ArrayList<>();
+        assertTrue(sp.insertSwitch("desert", list)); // list dosen't matter
+        assertFalse(sp.insertSwitch("insert", list));
+    }
+
+    // Switch function tests had to be testing using the parseInput funciton which they are inside
+    @Test
+    public void insertSwitchUsingParseInput() {
+        assertEquals("insert kick", sp.parseInput("insurtech"));
+        assertEquals("insert", sp.parseInput("desert"));
     }
 
     @Test
-    public void testLowerCaseEntry() {
-        String testPhrase = "b1";
+    public void beatSwitchUsingParseInputWithCharNumFormat() {
+        assertEquals("beat 1", sp.parseInput("B1"));
+        assertEquals("beat 2", sp.parseInput("B2"));
+        assertEquals("beat 8", sp.parseInput("B8"));
 
-        assertEquals("B1", sp.parseInput(testPhrase));
     }
 
     @Test
-    public void insertSwitchReturnsCorrectData() {
-        assertTrue(sp.insertSwitch("insert"));
-        // this should fail because the command is insert
-        assertFalse(sp.insertSwitch("add"));
+    public void beatSwitchWrongWordUsingParseInput() {
+        assertEquals("beat 2", sp.parseInput("be too"));
     }
 
+    @Test
+    public void parseInputFullCommands() {
+        assertEquals("insert kick beat 1", sp.parseInput("insert kick B1"));
+        assertEquals("insert kick beat 1", sp.parseInput("insurtech B1"));
+        assertEquals("insert kick beat 3", sp.parseInput("insert kick BBC"));
+        assertEquals("insert kick beat 6", sp.parseInput("insert kick beat 6"));
+        assertEquals("insert kick beat one", sp.parseInput("desert cake beat one"));
+        assertEquals("insert kick beat 1", sp.parseInput("desert cake beat 1"));
+    }
 }
