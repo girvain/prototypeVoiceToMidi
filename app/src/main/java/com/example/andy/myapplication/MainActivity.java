@@ -1,30 +1,20 @@
 package com.example.andy.myapplication;
 
 import android.content.ActivityNotFoundException;
-import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.speech.RecognizerIntent;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.leff.midi.MidiFile;
-import com.leff.midi.MidiTrack;
-import com.leff.midi.event.meta.Tempo;
-import com.leff.midi.event.meta.TimeSignature;
-
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
@@ -149,7 +139,7 @@ public class MainActivity extends AppCompatActivity {
 
                     // This is the same as calling drumTrackData.addDrumHit but with voice input
                     drumTrackData.processCommand(newResult);
-                    midiPlayer.convertDrumTrackDataToMidi(drumTrackData);
+                    midiPlayer.convertDrumTrackDataToMidi(drumTrackData, 40);
                     midiPlayer.writeToFile(getApplicationContext(), midiPlayer.getMidi());
 
                     loadFileIntoMediaPlayer();

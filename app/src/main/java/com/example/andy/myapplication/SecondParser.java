@@ -20,32 +20,6 @@ class SecondParser {
     public String parseInput(String input) {
         String[] phraseArray = input.split(" ");
         ArrayList<String> newPhrase = new ArrayList<>();
-        boolean switchCalled = false;
-
-//        for (String word : phraseArray) {
-//            if (word.equals("tick")) {
-//                newPhrase.add("kick");
-//            } else if (word.equals("insurtech")) {
-//                newPhrase.add("insert");
-//                newPhrase.add("kick");
-//            } else if (word.equals("desert")){
-//                newPhrase.add("insert");
-//            } else if (word.equals("cake")) {
-//                newPhrase.add("kick");
-//            } else if (word.equals("B1")) {
-//                newPhrase.add("beat");
-//                newPhrase.add("one");
-//            } else if(word.equals("b1")) {
-//                newPhrase.add("B1");
-//            } else if (word.equals("B2")) {
-//                newPhrase.add("beat");
-//                newPhrase.add("two");
-//            }
-//
-//            else {
-//                newPhrase.add(word);
-//            }
-//        }
 
         for (String word : phraseArray) {
             // if they are all returned false, then the word it either ok or no relavent
@@ -60,7 +34,6 @@ class SecondParser {
                 newPhrase.add(word);
             }
         }
-
         String listString = String.join(" ", newPhrase);
         return listString;
     }
@@ -86,7 +59,9 @@ class SecondParser {
             case "concerts": // this only happens when the following word is snare or near
                 newPhrase.add("insert");
                 return true;
-
+            case "it's": // this only happens when the following word is snare or near
+                newPhrase.add("insert");
+                return true;
         }
         return false;
     }
@@ -238,12 +213,6 @@ class SecondParser {
             case "feet":
                 newPhrase.add("beat");
                 return true;
-//            case "too":
-//                newPhrase.add("2");
-//                return true;
-//            case "to":
-//                newPhrase.add("2");
-//                return true;
             case "BH2":
                 newPhrase.add("beat");
                 newPhrase.add("2");
@@ -259,18 +228,12 @@ class SecondParser {
                 newPhrase.add("beat");
                 newPhrase.add("4");
                 return true;
-//            case "for":
-//                newPhrase.add("4");
-//                return true;
             case "speak":
                 newPhrase.add("beat");
                 return true;
             case "beach":
                 newPhrase.add("beat");
                 return true;
-//            case "x":
-//                newPhrase.add("6");
-//                return true;
             case "beats":
                 newPhrase.add("beat");
                 return true;
@@ -278,9 +241,7 @@ class SecondParser {
                 newPhrase.add("beat");
                 newPhrase.add("8");
                 return true;
-//            case "it":
-//                newPhrase.add("8");
-//                return true;
+
         }
         return false;
     }
@@ -309,17 +270,4 @@ class SecondParser {
         return false;
     }
 
-
-//    public CommandData convertToCommandData(String input) {
-//        CommandData commandData = new CommandData();
-//        String[] parsedPhraseArray = input.split(" ");
-//        for (String word : parsedPhraseArray) {
-//            if (word.equals("insert")) {
-//                commandData.setCommand(INSERT);
-//            } else if (word.equals("kick")){
-//                commandData.setName();
-//            }
-//        }
-//
-//    }
 }

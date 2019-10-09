@@ -69,39 +69,9 @@ public class MidiPlayer {
     }
 
     /**
-     * Method to create a midi file from a DrumtrackData objects drumComponentList
+     * Method to multiply the initial MIDI track bar into multiple bars
      */
-
-    public void updateNoteTrack() {
-//        midi.getTracks().get(1).insertNote(9, SNARE, 100, 5*480, 140);
-        MidiTrack tempoTrack = new MidiTrack();
-        MidiTrack noteTrack = new MidiTrack();
-        noteTrack.insertNote(9, SNARE, 100, 0 * 480, 140);
-        noteTrack.insertNote(9, SNARE, 100, 1 * 480, 140);
-        noteTrack.insertNote(9, SNARE, 100, (2 * 480) + 220, 140);
-        noteTrack.insertNote(9, SNARE, 100, 2 * 480, 140);
-        noteTrack.insertNote(9, SNARE, 100, 3 * 480, 140);
-        noteTrack.insertNote(9, SNARE, 0, 5 * 480, 140);
-        List<MidiTrack> tracks = new ArrayList<MidiTrack>();
-        tracks.add(tempoTrack);
-        tracks.add(noteTrack);
-        midi = new MidiFile(MidiFile.DEFAULT_RESOLUTION, tracks);
-
-        /**
-         * Algo to copy a current midi file and add to it
-         * get a list of DrumComponents to loop thu
-         * if the component beats[] containts a "hit" (a '1' in the array),
-         * do a noteTrack.insertNote with drumComponent.getName (which could be KICK etc)
-         * and also in the .insertNote, drumComponent.getPosOfBeat
-         * which will need converted to the right tick
-         */
-    }
-
-    /**
-     * This method will most likely be called when the drumTrackData objects state changes
-     * @return
-     */
-    public void convertDrumTrackDataToMidi(DrumTrackData drumTrackData) {
+    public void convertDrumTrackDataToMidi(DrumTrackData drumTrackData, int bars) {
         MidiTrack tempoTrack = new MidiTrack();
         MidiTrack noteTrack = new MidiTrack();
 
@@ -112,11 +82,46 @@ public class MidiPlayer {
                 }
             }
         }
+
+        int count = 1;
+        while (count < bars) {
+            int addtionalBarTick =  1920;
+
+            for (DrumComponent drumComponent : drumTrackData.getDrumComponentList()) {
+                for (int i = 0; i < drumComponent.getBeats().length; i++) {
+                    if (drumComponent.getBeats()[i] == 1) {
+                        noteTrack.insertNote(9, drumComponent.getName(), 100, i*240+ (addtionalBarTick*count), 140);
+                    }
+                }
+            }
+            count++;
+        }
         List<MidiTrack> tracks = new ArrayList<MidiTrack>();
         tracks.add(tempoTrack);
         tracks.add(noteTrack);
         midi = new MidiFile(MidiFile.DEFAULT_RESOLUTION, tracks);
     }
+
+    /**
+     * This method will most likely be called when the drumTrackData objects state changes
+     * @return
+     */
+//    public void convertDrumTrackDataToMidi(DrumTrackData drumTrackData) {
+//        MidiTrack tempoTrack = new MidiTrack();
+//        MidiTrack noteTrack = new MidiTrack();
+//
+//        for (DrumComponent drumComponent : drumTrackData.getDrumComponentList()) {
+//            for (int i = 0; i < drumComponent.getBeats().length; i++) {
+//                if (drumComponent.getBeats()[i] == 1) {
+//                    noteTrack.insertNote(9, drumComponent.getName(), 100, i*240, 140);
+//                }
+//            }
+//        }
+//        List<MidiTrack> tracks = new ArrayList<MidiTrack>();
+//        tracks.add(tempoTrack);
+//        tracks.add(noteTrack);
+//        midi = new MidiFile(MidiFile.DEFAULT_RESOLUTION, tracks);
+//    }
 
     public void writeToFile(Context context, MidiFile midi) {
         // 4. Write the MIDI data to a file
