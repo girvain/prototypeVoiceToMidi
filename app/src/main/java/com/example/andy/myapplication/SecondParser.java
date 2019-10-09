@@ -102,8 +102,11 @@ class SecondParser {
 
     public boolean hihatSwitch(String word, ArrayList<String> newPhrase) {
         switch (word) {
+            case "hihat":
+                newPhrase.add("hi-hat");
+                return true;
             case "higher":
-                newPhrase.add("hihat");
+                newPhrase.add("hi-hat");
                 return true;
             case "clothes":
                 newPhrase.add("close");

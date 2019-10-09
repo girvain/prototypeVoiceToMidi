@@ -38,6 +38,12 @@ public class MainActivity extends AppCompatActivity {
         speak.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                // stops the audio and removes loaded file on click
+                if (mediaPlayer.isPlaying()) {
+                    mediaPlayer.stop();
+                    mediaPlayer.reset();
+                }
+
                 Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
                 intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
                         RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
@@ -53,6 +59,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+
 
         // My Code
         secondParser = new SecondParser();
@@ -80,28 +88,28 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        Button button = findViewById(R.id.addButton);
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                midiPlayer.convertDrumTrackDataToMidi(drumTrackData);
-//                midiPlayer.writeToFile(getApplicationContext(), midiPlayer.getMidi());
-//                loadFileIntoMediaPlayer();
+//        Button button = findViewById(R.id.addButton);
+//        button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+////                midiPlayer.convertDrumTrackDataToMidi(drumTrackData);
+////                midiPlayer.writeToFile(getApplicationContext(), midiPlayer.getMidi());
+////                loadFileIntoMediaPlayer();
+////
+////                mediaPlayer.start();
 //
-//                mediaPlayer.start();
-
-//                drumTrackData.processCommand("insert kick B1");
-//                midiPlayer.convertDrumTrackDataToMidi(drumTrackData);
-//                midiPlayer.writeToFile(getApplicationContext(), midiPlayer.getMidi());
+////                drumTrackData.processCommand("insert kick B1");
+////                midiPlayer.convertDrumTrackDataToMidi(drumTrackData);
+////                midiPlayer.writeToFile(getApplicationContext(), midiPlayer.getMidi());
+////                loadFileIntoMediaPlayer();
+////                mediaPlayer.start();
+//
+//                // button for playback of file, needs to load fresh from internal mem each time
+//                // incase of any add/removes of notes from Midi file.
 //                loadFileIntoMediaPlayer();
 //                mediaPlayer.start();
-
-                // button for playback of file, needs to load fresh from internal mem each time
-                // incase of any add/removes of notes from Midi file.
-                loadFileIntoMediaPlayer();
-                mediaPlayer.start();
-            }
-        });
+//            }
+//        });
     }
 
     public void loadFileIntoMediaPlayer() {
