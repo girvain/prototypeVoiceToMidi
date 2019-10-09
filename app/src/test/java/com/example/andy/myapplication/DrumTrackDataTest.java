@@ -64,7 +64,7 @@ public class DrumTrackDataTest {
 //        assertEquals(drumTrackData.convertStringToCommandDataObj(testCommand).getCommand(), DrumTrackData.INSERT);
 //        assertEquals(drumTrackData.convertStringToCommandDataObj(testCommand).getName(), DrumTrackData.KICK);
 //        assertEquals(drumTrackData.convertStringToCommandDataObj(testCommand).getPos(), 1);
-        assertNotNull(drumTrackData.convertStringToCommandDataObj(testCommand));
+        assertNull(drumTrackData.convertStringToCommandDataObj(testCommand));
     }
 
     @Test
@@ -141,5 +141,30 @@ public class DrumTrackDataTest {
     @Test
     public void beatNumberSwitchReturnNumber() {
         assertEquals(2, drumTrackData.beatNumberSwitchReturnNumber("2"));
+    }
+
+    @Test
+    public void validateCommandDataMissingCommandValue() {
+        CommandData cd = new CommandData();
+        ArrayList<Integer> intList = new ArrayList<>();
+        intList.add(3);
+        intList.add(3);
+
+        cd.setName(DrumTrackData.KICK);
+        cd.setPostions(intList);
+        assertFalse(drumTrackData.validateCommandDataObj(cd));
+    }
+
+    @Test
+    public void validateDataNoMissingValues() {
+        CommandData cd = new CommandData();
+        ArrayList<Integer> intList = new ArrayList<>();
+        intList.add(3);
+        intList.add(3);
+
+        cd.setCommand(DrumTrackData.KICK);
+        cd.setName(DrumTrackData.KICK);
+        cd.setPostions(intList);
+        assertTrue(drumTrackData.validateCommandDataObj(cd));
     }
 }

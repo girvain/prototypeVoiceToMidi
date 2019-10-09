@@ -30,6 +30,8 @@ public class MidiPlayer {
         tempoTrack = new MidiTrack();
         noteTrack = new MidiTrack();
 
+
+
         // 2. Add events to the tracks
         // Track 0 is the tempo map
         TimeSignature ts = new TimeSignature();
@@ -42,11 +44,16 @@ public class MidiPlayer {
         tempoTrack.insertEvent(tempo);
 
         // Temp data
-        noteTrack.insertNote(9, KICK, 100, 1, 140);
-        noteTrack.insertNote(9, KICK, 100, 480, 140);
+        noteTrack.insertNote(9, KICK, 100, 0 * 480, 140);
+        noteTrack.insertNote(9, SNARE, 100, 0 * 480, 140);
         noteTrack.insertNote(9, SNARE, 100, 480, 140);
         noteTrack.insertNote(9, KICK, 100, 2 * 480, 140);
         noteTrack.insertNote(9, KICK, 100, 3 * 480, 140);
+
+        noteTrack.insertNote(9, HIHAT_CLOSE, 70, 0 * 480, 140);
+        noteTrack.insertNote(9, HIHAT_CLOSE, 70, 1 * 480, 140);
+        noteTrack.insertNote(9, HIHAT_CLOSE, 80, 2 * 480, 140);
+        noteTrack.insertNote(9, HIHAT_CLOSE, 70, 3 * 480, 140);
 
 
         // 3. Create a MidiFile with the tracks we created

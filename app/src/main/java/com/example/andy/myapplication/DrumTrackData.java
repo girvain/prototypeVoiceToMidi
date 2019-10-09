@@ -92,7 +92,25 @@ public class DrumTrackData {
             }
 
         }
-        return commandData;
+        if (validateCommandDataObj(commandData)) {
+            return commandData;
+        } else {
+            return null;
+        }
+    }
+
+    /**
+     * Function to check that all values of the commandData have been set from the command
+     */
+    public boolean validateCommandDataObj(CommandData commandData) {
+        if (commandData.getCommand() != 0 &&
+            commandData.getName() != 0 &&
+                commandData.getPostions().size() >= 1
+        ) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 
@@ -177,12 +195,19 @@ public class DrumTrackData {
         CommandData commandData = convertStringToCommandDataObj(input);
 
 
-        if (commandData.getCommand() == INSERT) {
-            if (commandData.getPostions().size() >= 1) {
-                for (int hit : commandData.getPostions()) {
+        if (commandData != null && commandData.getCommand() == INSERT) {
+            for (int hit : commandData.getPostions()) {
                     addDrumHit(commandData.getName(), hit);
-                }
             }
+
+
+
+
+            //             if (commandData.getPostions().size() >= 1) {
+//                for (int hit : commandData.getPostions()) {
+//                    addDrumHit(commandData.getName(), hit);
+//                }
+//            }
 
 //            if (commandData.getPos() != -1) {
 //                addDrumHit(commandData.getName(), commandData.getPos());
