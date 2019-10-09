@@ -1,7 +1,5 @@
 package com.example.andy.myapplication;
 
-import android.util.Log;
-
 import java.util.ArrayList;
 
 /**
@@ -55,76 +53,106 @@ public class DrumTrackData {
             return true;
         }
     }
-
+    //TODO Change this to a switch
     public CommandData convertStringToCommandDataObj(String input) {
         String[] parsedPhraseArray = input.split(" ");
         CommandData commandData = new CommandData();
         boolean isBeat = false;
+        boolean isHihat = false;
         for (String word : parsedPhraseArray) {
             if (word.equals("insert")) {
                 commandData.setCommand(INSERT);
             } else if (word.equals("kick")) {
                 commandData.setName(KICK);
-            } else if (word.equals("beat")) {
-                isBeat = true;
-//                commandData.setPos(0);
-            } else if (isBeat) {
-                switch (word) {
-                    case "one":
-                        commandData.setPos(0);
-                        break;
-                    case "two":
-                        commandData.setPos(1);
-                        break;
-                    case "three":
-                        commandData.setPos(2);
-                        break;
-                    case "four":
-                        commandData.setPos(3);
-                        break;
-                    case "five":
-                        commandData.setPos(4);
-                        break;
-                    case "six":
-                        commandData.setPos(5);
-                        break;
-                    case "seven":
-                        commandData.setPos(6);
-                        break;
-                    case "eight":
-                        commandData.setPos(7);
-                        break;
-                    case "1":
-                        commandData.setPos(0);
-                        break;
-                    case "2":
-                        commandData.setPos(1);
-                        break;
-                    case "3":
-                        commandData.setPos(2);
-                        break;
-                    case "4":
-                        commandData.setPos(3);
-                        break;
-                    case "5":
-                        commandData.setPos(4);
-                        break;
-                    case "6":
-                        commandData.setPos(5);
-                        break;
-                    case "7":
-                        commandData.setPos(6);
-                        break;
-                    case "8":
-                        commandData.setPos(7);
-                        break;
-                    default:
-                        commandData.setPos(-1);// this is because the default uninitialised value is 0
+            } else if (word.equals("snare")) {
+                commandData.setName(SNARE);
+            } else if (word.equals("hi-hat")) {
+                isHihat = true;
+            } else if (isHihat) {
+                hihatSwitch(word, commandData);
+                isHihat = false;
+            }
+//            else if (word.equals("beat")) {
+//                isBeat = true;
+//            } else if (isBeat) {
+//                beatNumberSwitch(word, commandData);
+//                isBeat = false;
+//            }
+            else if (isInteger(word)) {
+                if (word.length() > 1) {
+                    for (int i = 0; i < word.length(); i++) {
+                        int parsedString = Character.getNumericValue(word.charAt(i));
+                        commandData.getPostions().add(parsedString);
+                    }
+                } else {
+                    beatNumberSwitch(word, commandData);
                 }
             }
+            //beatNumberSwitch(word, commandData);
         }
         return commandData;
     }
+
+
+    public void hihatSwitch(String word, CommandData commandData) {
+        switch (word) {
+            case "open":
+                commandData.setName(HIHAT_OPEN);
+                break;
+            case "close":
+                commandData.setName(HIHAT_CLOSE);
+                break;
+        }
+    }
+
+    public void beatNumberSwitch(String word, CommandData commandData) {
+        switch (word) {
+            case "one":
+                commandData.setPos(0);
+                break;
+            case "two":
+                commandData.setPos(2);
+                break;
+            case "three":
+                commandData.setPos(4);
+                break;
+            case "four":
+                commandData.setPos(6);
+                break;
+            case "1":
+                commandData.setPos(0);
+                break;
+            case "1.5":
+                commandData.setPos(1);
+                break;
+            case "2":
+                commandData.setPos(2);
+                break;
+            case "2.5":
+                commandData.setPos(3);
+                break;
+            case "3":
+                commandData.setPos(4);
+                break;
+            case "3.5":
+                commandData.setPos(5);
+                break;
+            case "4":
+                commandData.setPos(6);
+                break;
+            case "4.5":
+                commandData.setPos(7);
+                break;
+            default:
+                commandData.setPos(-1);// this is because the default uninitialised value is 0
+        }
+    }
+
+    // Tomorrows starting point
+
+    // if the commandData.positions is > 1, it's a chain command.
+    // create a loop to call addDrumHit with getName and a loop of all the positions
+    // from the getPositions()
 
     public void processCommand(String input) {
         CommandData commandData = convertStringToCommandDataObj(input);
@@ -134,6 +162,13 @@ public class DrumTrackData {
             }
 
         }
+    }
+
+    public boolean isInteger(String s) {
+        if (s.matches("-?\\d+")) {
+            return true;
+        }
+        return false;
     }
 
 

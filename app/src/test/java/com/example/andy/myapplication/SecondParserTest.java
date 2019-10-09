@@ -57,6 +57,15 @@ public class SecondParserTest {
     @Test
     public void beatSwitchWrongWordUsingParseInput() {
         assertEquals("beat 2", sp.parseInput("be too"));
+        assertEquals("beat 3", sp.parseInput("BBC"));
+    }
+
+    @Test
+    public void hihatSwitch() {
+        boolean twoWordBuffer = false;
+        assertEquals("insert hi-hat open beat 1", sp.parseInput("insert hi-hat open beat 1"));
+        assertEquals("insert hi-hat open beat 1", sp.parseInput("insert I had open beat 1"));
+        assertEquals("insert hi-hat close beat 1", sp.parseInput("insert I had closed beat 1"));
     }
 
     @Test
@@ -67,5 +76,7 @@ public class SecondParserTest {
         assertEquals("insert kick beat 6", sp.parseInput("insert kick beat 6"));
         assertEquals("insert kick beat one", sp.parseInput("desert cake beat one"));
         assertEquals("insert kick beat 1", sp.parseInput("desert cake beat 1"));
+        assertEquals("insert kick beat 1", sp.parseInput("desert cake beat 1"));
+
     }
 }

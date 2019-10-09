@@ -37,7 +37,7 @@ public class DrumTrackDataTest {
 
     @Test
     public void convertStringToCommandDataReturnsCorrectObject() {
-        String testCommand = "insert kick beat seven";
+        String testCommand = "insert kick beat 4";
         CommandData convertStringToCommandDataResult =
                 drumTrackData.convertStringToCommandDataObj(testCommand);
 
@@ -48,11 +48,45 @@ public class DrumTrackDataTest {
     }
 
     @Test
+    public void convertStringToCommandDataHihatFeature() {
+        CommandData result = drumTrackData.convertStringToCommandDataObj("insert hi-hat open beat 4");
+        assertEquals(DrumTrackData.INSERT, result.getCommand());
+        assertEquals(DrumTrackData.HIHAT_OPEN, result.getName());
+        assertEquals(6, result.getPos());
+
+        CommandData result2 = drumTrackData.convertStringToCommandDataObj("insert hi-hat close beat 4");
+        assertEquals(DrumTrackData.INSERT, result2.getCommand());
+        assertEquals(DrumTrackData.HIHAT_CLOSE, result2.getName());
+        assertEquals(6, result2.getPos());
+    }
+
+    @Test
     public void convertStringToCommandDataError() {
         String testCommand = "insert cat B1";
 //        assertEquals(drumTrackData.convertStringToCommandDataObj(testCommand).getCommand(), DrumTrackData.INSERT);
 //        assertEquals(drumTrackData.convertStringToCommandDataObj(testCommand).getName(), DrumTrackData.KICK);
 //        assertEquals(drumTrackData.convertStringToCommandDataObj(testCommand).getPos(), 1);
         assertNotNull(drumTrackData.convertStringToCommandDataObj(testCommand));
+    }
+
+    @Test
+    public void convertStringToCommandDataMultipleCommands() {
+        CommandData result = drumTrackData.convertStringToCommandDataObj("insert kick 123");
+        assertEquals(DrumTrackData.INSERT, result.getCommand());
+        assertEquals(DrumTrackData.KICK, result.getName());
+
+        int positionsResult = result.getPostions().get(0);
+        assertEquals(1, positionsResult);
+        int positionsResult2 = result.getPostions().get(1);
+        assertEquals(2, positionsResult2);
+        int positionsResult3 = result.getPostions().get(2);
+        assertEquals(3, positionsResult3);
+
+    }
+
+    @Test
+    public void isIntegerTest() {
+        assertTrue(drumTrackData.isInteger("1234"));
+        assertFalse(drumTrackData.isInteger("hellooooo!"));
     }
 }
