@@ -57,8 +57,8 @@ public class DrumTrackData {
     public CommandData convertStringToCommandDataObj(String input) {
         String[] parsedPhraseArray = input.split(" ");
         CommandData commandData = new CommandData();
-        boolean isBeat = false;
         boolean isHihat = false;
+
         for (String word : parsedPhraseArray) {
             if (word.equals("insert")) {
                 commandData.setCommand(INSERT);
@@ -71,24 +71,26 @@ public class DrumTrackData {
             } else if (isHihat) {
                 hihatSwitch(word, commandData);
                 isHihat = false;
-            }
-//            else if (word.equals("beat")) {
-//                isBeat = true;
-//            } else if (isBeat) {
-//                beatNumberSwitch(word, commandData);
-//                isBeat = false;
-//            }
-            else if (isInteger(word)) {
+            } else if (isInteger(word)) {
+                // if the string containing an int is more than 1 character,
+                // it needs to be broken into tokens using splitNumbers()
                 if (word.length() > 1) {
-                    for (int i = 0; i < word.length(); i++) {
-                        int parsedString = Character.getNumericValue(word.charAt(i));
-                        commandData.getPostions().add(parsedString);
+                    ArrayList<String> splitString = splitNumberString(word);
+                    for (String pos : splitString) {
+                        // the number from the voice input format is converted CommandData
+                        // format, which is the literal array number position to insert a hit
+                        int convertedNum = beatNumberSwitchReturnNumber(pos);
+                        commandData.getPostions().add(convertedNum);
                     }
                 } else {
-                    beatNumberSwitch(word, commandData);
+                    int convertedNum = beatNumberSwitchReturnNumber(word);
+                    commandData.getPostions().add(convertedNum);
                 }
+            } else {
+                // This is vital to processing commands with written words, i.e "one"
+                beatNumberSwitch(word, commandData);
             }
-            //beatNumberSwitch(word, commandData);
+
         }
         return commandData;
     }
@@ -108,67 +110,115 @@ public class DrumTrackData {
     public void beatNumberSwitch(String word, CommandData commandData) {
         switch (word) {
             case "one":
-                commandData.setPos(0);
+                commandData.getPostions().add(0);
                 break;
             case "two":
-                commandData.setPos(2);
+                commandData.getPostions().add(2);
                 break;
             case "three":
-                commandData.setPos(4);
+                commandData.getPostions().add(4);
                 break;
             case "four":
-                commandData.setPos(6);
+                commandData.getPostions().add(6);
                 break;
             case "1":
-                commandData.setPos(0);
+                commandData.getPostions().add(0);
                 break;
             case "1.5":
-                commandData.setPos(1);
+                commandData.getPostions().add(1);
                 break;
             case "2":
-                commandData.setPos(2);
+                commandData.getPostions().add(2);
                 break;
             case "2.5":
-                commandData.setPos(3);
+                commandData.getPostions().add(3);
                 break;
             case "3":
-                commandData.setPos(4);
+                commandData.getPostions().add(4);
                 break;
             case "3.5":
-                commandData.setPos(5);
+                commandData.getPostions().add(5);
                 break;
             case "4":
-                commandData.setPos(6);
+                commandData.getPostions().add(6);
                 break;
             case "4.5":
-                commandData.setPos(7);
+                commandData.getPostions().add(7);
                 break;
             default:
                 commandData.setPos(-1);// this is because the default uninitialised value is 0
         }
     }
 
-    // Tomorrows starting point
+    public int beatNumberSwitchReturnNumber(String letter) {
+        switch (letter) {
+            case "1":
+                return 0;
+            case "1.5":
+                return 1;
+            case "2":
+                return 2;
+            case "2.5":
+                return 3;
+            case "3":
+                return 4;
+            case "3.5":
+                return 5;
+            case "4":
+                return 6;
+            case "4.5":
+                return 7;
+        }
+        return -1;
+    }
 
-    // if the commandData.positions is > 1, it's a chain command.
-    // create a loop to call addDrumHit with getName and a loop of all the positions
-    // from the getPositions()
 
     public void processCommand(String input) {
         CommandData commandData = convertStringToCommandDataObj(input);
+
+
         if (commandData.getCommand() == INSERT) {
-            if (commandData.getPos() != -1) {
-                addDrumHit(commandData.getName(), commandData.getPos());
+            if (commandData.getPostions().size() >= 1) {
+                for (int hit : commandData.getPostions()) {
+                    addDrumHit(commandData.getName(), hit);
+                }
             }
+
+//            if (commandData.getPos() != -1) {
+//                addDrumHit(commandData.getName(), commandData.getPos());
+//            }
 
         }
     }
 
+    // TODO Possibly take out isInteger and splitNumberString to a utility object
     public boolean isInteger(String s) {
         if (s.matches("-?\\d+")) {
             return true;
         }
         return false;
+    }
+
+    public ArrayList<String> splitNumberString(String str) {
+        char[] chars = str.toCharArray();
+        ArrayList<String> tokens = new ArrayList<>();
+        for (int i = 0; i < chars.length-1; i++) { // only loop till the second last char
+            if (chars[i+1] == '.') {
+                tokens.add("" + chars[i] + chars[i+1] + chars[i+2]);
+            }
+            else if (chars[i] == '.') {
+                // ignore it
+            }
+            else if (i > 0 && chars[i-1] == '.') {
+                // add the right side of decimal
+            }
+            else {
+                tokens.add("" + chars[i]);
+            }
+        }
+        // add the last char at the end of the stirng
+        tokens.add("" + chars[chars.length-1]);
+        return tokens;
     }
 
 
