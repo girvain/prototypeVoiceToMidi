@@ -6,13 +6,17 @@ import org.junit.Test;
 import java.util.ArrayList;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 public class DrumTrackDataTest {
 
     DrumTrackData drumTrackData;
+    CommandData commandData;
+
     @Before
     public void setUp() throws Exception {
         drumTrackData = new DrumTrackData();
+        commandData = mock(CommandData.class, "commandData");
     }
 
     @Test
@@ -42,7 +46,7 @@ public class DrumTrackDataTest {
         CommandData result = drumTrackData.convertStringToCommandDataObj("insert kick 1");
         assertEquals(DrumTrackData.INSERT, result.getCommand());
         assertEquals(DrumTrackData.KICK, result.getName());
-        assertEquals(0, result.getPostions().get(0).intValue());
+        assertEquals(0, result.getPositions().get(0).intValue());
     }
 
     @Test
@@ -50,12 +54,12 @@ public class DrumTrackDataTest {
         CommandData result = drumTrackData.convertStringToCommandDataObj("insert hi-hat open beat 4");
         assertEquals(DrumTrackData.INSERT, result.getCommand());
         assertEquals(DrumTrackData.HIHAT_OPEN, result.getName());
-        assertEquals(6, result.getPostions().get(0).intValue());
+        assertEquals(6, result.getPositions().get(0).intValue());
 
         CommandData result2 = drumTrackData.convertStringToCommandDataObj("insert hi-hat close beat 4");
         assertEquals(DrumTrackData.INSERT, result2.getCommand());
         assertEquals(DrumTrackData.HIHAT_CLOSE, result2.getName());
-        assertEquals(6, result2.getPostions().get(0).intValue());
+        assertEquals(6, result2.getPositions().get(0).intValue());
     }
 
     @Test
@@ -76,11 +80,11 @@ public class DrumTrackDataTest {
         assertEquals(DrumTrackData.INSERT, result.getCommand());
         assertEquals(DrumTrackData.KICK, result.getName());
 
-        int positionsResult = result.getPostions().get(0);
+        int positionsResult = result.getPositions().get(0);
         assertEquals(0, positionsResult);
-        int positionsResult2 = result.getPostions().get(1);
+        int positionsResult2 = result.getPositions().get(1);
         assertEquals(2, positionsResult2);
-        int positionsResult3 = result.getPostions().get(2);
+        int positionsResult3 = result.getPositions().get(2);
         assertEquals(4, positionsResult3);
 
     }
@@ -143,28 +147,4 @@ public class DrumTrackDataTest {
         assertEquals(2, drumTrackData.beatNumberSwitchReturnNumber("2"));
     }
 
-    @Test
-    public void validateCommandDataMissingCommandValue() {
-        CommandData cd = new CommandData();
-        ArrayList<Integer> intList = new ArrayList<>();
-        intList.add(3);
-        intList.add(3);
-
-        cd.setName(DrumTrackData.KICK);
-        cd.setPostions(intList);
-        assertFalse(drumTrackData.validateCommandDataObj(cd));
-    }
-
-    @Test
-    public void validateDataNoMissingValues() {
-        CommandData cd = new CommandData();
-        ArrayList<Integer> intList = new ArrayList<>();
-        intList.add(3);
-        intList.add(3);
-
-        cd.setCommand(DrumTrackData.KICK);
-        cd.setName(DrumTrackData.KICK);
-        cd.setPostions(intList);
-        assertTrue(drumTrackData.validateCommandDataObj(cd));
-    }
 }

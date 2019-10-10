@@ -8,7 +8,8 @@ import java.util.ArrayList;
 
 class SecondParser {
 
-    String twoWordBuffer = "";
+    private String twoWordBuffer = "";
+
     /**
      * Splits google API's original string of word interpreted from user into a string
      * array, then converts anything interpreted wrong that sounds like the right words.

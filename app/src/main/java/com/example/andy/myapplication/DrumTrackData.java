@@ -21,6 +21,16 @@ public class DrumTrackData {
     }
 
 
+    public void processCommand(String input) {
+        CommandData commandData = convertStringToCommandDataObj(input);
+
+        if (commandData != null && commandData.getCommand() == INSERT) {
+            for (int hit : commandData.getPositions()) {
+                addDrumHit(commandData.getName(), hit);
+            }
+        }
+    }
+
     public DrumComponent checkComponentExists(int name) {
         for (DrumComponent i : drumComponentList) {
             if (i.getName() == name) {
@@ -29,6 +39,7 @@ public class DrumTrackData {
         }
         return null;
     }
+
 
     // method returns true of false so we know if any changes have happened.
     // This will be important later for keeping the state of the drumComponentList
@@ -53,7 +64,7 @@ public class DrumTrackData {
             return true;
         }
     }
-    //TODO Change this to a switch
+
     public CommandData convertStringToCommandDataObj(String input) {
         String[] parsedPhraseArray = input.split(" ");
         CommandData commandData = new CommandData();
@@ -72,47 +83,41 @@ public class DrumTrackData {
                 hihatSwitch(word, commandData);
                 isHihat = false;
             } else if (isInteger(word)) {
-                // if the string containing an int is more than 1 character,
-                // it needs to be broken into tokens using splitNumbers()
-                if (word.length() > 1) {
-                    ArrayList<String> splitString = splitNumberString(word);
-                    for (String pos : splitString) {
-                        // the number from the voice input format is converted CommandData
-                        // format, which is the literal array number position to insert a hit
-                        int convertedNum = beatNumberSwitchReturnNumber(pos);
-                        commandData.getPostions().add(convertedNum);
-                    }
-                } else {
-                    int convertedNum = beatNumberSwitchReturnNumber(word);
-                    commandData.getPostions().add(convertedNum);
-                }
+                longNumberStringToCommandData(word, commandData);
             } else {
                 // This is vital to processing commands with written words, i.e "one"
+                // if this last one doesn't add to the command object, then the word was irrelevant
+                // and floats into outer space
                 beatNumberSwitch(word, commandData);
             }
-
         }
-        if (validateCommandDataObj(commandData)) {
+        if (commandData.validate()) {
             return commandData;
         } else {
             return null;
         }
     }
 
-    /**
-     * Function to check that all values of the commandData have been set from the command
-     */
-    public boolean validateCommandDataObj(CommandData commandData) {
-        if (commandData.getCommand() != 0 &&
-            commandData.getName() != 0 &&
-                commandData.getPostions().size() >= 1
-        ) {
-            return true;
+    public void longNumberStringToCommandData(String word, CommandData commandData) {
+        // if the string containing an int that is more than 1 character,
+        // it needs to be broken into tokens using splitNumbers()
+        if (word.length() > 1) {
+            ArrayList<String> splitString = splitNumberString(word);
+            for (String pos : splitString) {
+                // the number from the voice input format is converted CommandData
+                // format, which is the literal array number position to insert a hit
+                int convertedNum = beatNumberSwitchReturnNumber(pos);
+                if (convertedNum != -1) {
+                    commandData.getPositions().add(convertedNum);
+                }
+            }
         } else {
-            return false;
+            int convertedNum = beatNumberSwitchReturnNumber(word);
+            if (convertedNum != -1) {
+                commandData.getPositions().add(convertedNum);
+            }
         }
     }
-
 
     public void hihatSwitch(String word, CommandData commandData) {
         switch (word) {
@@ -125,46 +130,53 @@ public class DrumTrackData {
         }
     }
 
+    /**
+     * This method takes a string and a commandData object to insert the result data to and
+     * be returned.
+     * IMPORTANT! The Positions data structure in the commmandData object is an arrayList of ints which
+     * specify the translated version from the spoken word input, into the DrumTrackData representation
+     * of where the beat is to be placed.
+     * @param word
+     * @param commandData
+     */
     public void beatNumberSwitch(String word, CommandData commandData) {
         switch (word) {
             case "one":
-                commandData.getPostions().add(0);
+                commandData.getPositions().add(0);
                 break;
             case "two":
-                commandData.getPostions().add(2);
+                commandData.getPositions().add(2);
                 break;
             case "three":
-                commandData.getPostions().add(4);
+                commandData.getPositions().add(4);
                 break;
             case "four":
-                commandData.getPostions().add(6);
+                commandData.getPositions().add(6);
                 break;
             case "1":
-                commandData.getPostions().add(0);
+                commandData.getPositions().add(0);
                 break;
             case "1.5":
-                commandData.getPostions().add(1);
+                commandData.getPositions().add(1);
                 break;
             case "2":
-                commandData.getPostions().add(2);
+                commandData.getPositions().add(2);
                 break;
             case "2.5":
-                commandData.getPostions().add(3);
+                commandData.getPositions().add(3);
                 break;
             case "3":
-                commandData.getPostions().add(4);
+                commandData.getPositions().add(4);
                 break;
             case "3.5":
-                commandData.getPostions().add(5);
+                commandData.getPositions().add(5);
                 break;
             case "4":
-                commandData.getPostions().add(6);
+                commandData.getPositions().add(6);
                 break;
             case "4.5":
-                commandData.getPostions().add(7);
+                commandData.getPositions().add(7);
                 break;
-            default:
-                commandData.setPos(-1);// this is because the default uninitialised value is 0
         }
     }
 
@@ -190,31 +202,6 @@ public class DrumTrackData {
         return -1;
     }
 
-
-    public void processCommand(String input) {
-        CommandData commandData = convertStringToCommandDataObj(input);
-
-
-        if (commandData != null && commandData.getCommand() == INSERT) {
-            for (int hit : commandData.getPostions()) {
-                    addDrumHit(commandData.getName(), hit);
-            }
-
-
-
-
-            //             if (commandData.getPostions().size() >= 1) {
-//                for (int hit : commandData.getPostions()) {
-//                    addDrumHit(commandData.getName(), hit);
-//                }
-//            }
-
-//            if (commandData.getPos() != -1) {
-//                addDrumHit(commandData.getName(), commandData.getPos());
-//            }
-
-        }
-    }
 
     // TODO Possibly take out isInteger and splitNumberString to a utility object
     public boolean isInteger(String s) {
