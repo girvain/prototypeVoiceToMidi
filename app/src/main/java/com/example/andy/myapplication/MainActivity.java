@@ -22,17 +22,19 @@ public class MainActivity extends AppCompatActivity {
     private MediaPlayer mediaPlayer;
     private MidiPlayer midiPlayer;
     private DrumTrackData drumTrackData;
+    private SecondParser secondParser;
 
     private final int REQ_CODE = 100;
-    TextView textView;
+    private TextView textView;
+    private ImageView playButton;
+    private ImageView pauseButton;
 
-    // My Code
-    private SecondParser secondParser;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         textView = findViewById(R.id.text);
         ImageView speak = findViewById(R.id.speak);
         speak.setOnClickListener(new View.OnClickListener() {
@@ -60,20 +62,9 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
-        // My Code
         secondParser = new SecondParser();
-        drumTrackData = new DrumTrackData();
+        drumTrackData = new DrumTrackData(new CommandProcessor());
 
-        /****************? Dummy object data for testing *****************/
-//        drumTrackData = new DrumTrackData();
-//        drumTrackData.addDrumHit(DrumTrackData.KICK, 0);
-//        drumTrackData.addDrumHit(DrumTrackData.KICK, 2);
-//        drumTrackData.addDrumHit(DrumTrackData.KICK, 4);
-//        drumTrackData.addDrumHit(DrumTrackData.KICK, 6);
-//        drumTrackData.addDrumHit(DrumTrackData.SNARE, 2);
-//        drumTrackData.addDrumHit(DrumTrackData.SNARE, 6);
 
         midiPlayer = new MidiPlayer();
         midiPlayer.writeToFile(this, midiPlayer.getMidi());
@@ -83,33 +74,38 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onCompletion(MediaPlayer mp) {
                 mp.reset();
-//                mp.release();
             }
         });
 
+        playButton = findViewById(R.id.play_button);
+        playButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mediaPlayer.start();
+                playPauseVisabilitySetup();
+            }
+        });
 
-//        Button button = findViewById(R.id.addButton);
-//        button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-////                midiPlayer.convertDrumTrackDataToMidi(drumTrackData);
-////                midiPlayer.writeToFile(getApplicationContext(), midiPlayer.getMidi());
-////                loadFileIntoMediaPlayer();
-////
-////                mediaPlayer.start();
-//
-////                drumTrackData.processCommand("insert kick B1");
-////                midiPlayer.convertDrumTrackDataToMidi(drumTrackData);
-////                midiPlayer.writeToFile(getApplicationContext(), midiPlayer.getMidi());
-////                loadFileIntoMediaPlayer();
-////                mediaPlayer.start();
-//
-//                // button for playback of file, needs to load fresh from internal mem each time
-//                // incase of any add/removes of notes from Midi file.
-//                loadFileIntoMediaPlayer();
-//                mediaPlayer.start();
-//            }
-//        });
+        pauseButton = findViewById(R.id.pause_button);
+        pauseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mediaPlayer.pause();
+                playPauseVisabilitySetup();
+            }
+        });
+
+    }
+
+    public void playPauseVisabilitySetup() {
+        if (mediaPlayer.isPlaying()) {
+            playButton.setVisibility(View.INVISIBLE);
+            pauseButton.setVisibility(View.VISIBLE);
+        }
+        else {
+            playButton.setVisibility(View.VISIBLE);
+            pauseButton.setVisibility(View.INVISIBLE);
+        }
     }
 
     public void loadFileIntoMediaPlayer() {
@@ -135,15 +131,11 @@ public class MainActivity extends AppCompatActivity {
         switch (requestCode) {
             case REQ_CODE: {
                 if (resultCode == RESULT_OK && null != data) {
-
                     ArrayList<String> result = data
                             .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-//                    textView.setText(result.get(0));
 
-                    // My Code
                     String newResult = secondParser.parseInput(result.get(0));
                     textView.setText(newResult);
-
 
                     // This is the same as calling drumTrackData.addDrumHit but with voice input
                     drumTrackData.processCommand(newResult);
@@ -151,8 +143,8 @@ public class MainActivity extends AppCompatActivity {
                     midiPlayer.writeToFile(getApplicationContext(), midiPlayer.getMidi());
 
                     loadFileIntoMediaPlayer();
+                    pauseButton.setVisibility(View.VISIBLE);
                     mediaPlayer.start();
-
                 }
                 break;
             }

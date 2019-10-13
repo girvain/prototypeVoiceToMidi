@@ -15,7 +15,7 @@ public class DrumTrackDataTest {
 
     @Before
     public void setUp() throws Exception {
-        drumTrackData = new DrumTrackData();
+        drumTrackData = new DrumTrackData(new CommandProcessor());
         commandData = mock(CommandData.class, "commandData");
     }
 
@@ -29,6 +29,7 @@ public class DrumTrackDataTest {
     @Test
     public void isComponentAddedWithCorrectData() {
         drumTrackData.addDrumHit(DrumTrackData.KICK, 1);
+        // get the first item from the components of DrumTrackData obj and test the data
         assertEquals(drumTrackData.getDrumComponentList().get(0).getName(), DrumTrackData.KICK);
         assertEquals(drumTrackData.getDrumComponentList().get(0).getBeats()[1], 1);
         assertEquals(drumTrackData.getDrumComponentList().get(0).getBeats()[0], 0);
@@ -42,51 +43,16 @@ public class DrumTrackDataTest {
     }
 
     @Test
-    public void convertStringToCommandDataReturnsCorrectObject() {
-        CommandData result = drumTrackData.convertStringToCommandDataObj("insert kick 1");
-        assertEquals(DrumTrackData.INSERT, result.getCommand());
-        assertEquals(DrumTrackData.KICK, result.getName());
-        assertEquals(0, result.getPositions().get(0).intValue());
+    public void deleteDrumHitCorrectData() {
+        drumTrackData.addDrumHit(DrumTrackData.KICK, 1);
+        drumTrackData.deleteDrumHit(DrumTrackData.KICK, 1);
+        assertEquals(drumTrackData.getDrumComponentList().get(0).getName(), DrumTrackData.KICK); // should remain true
+        assertEquals(drumTrackData.getDrumComponentList().get(0).getBeats()[1], 0); // should be a zero as it's now removed
     }
 
     @Test
-    public void convertStringToCommandDataHihatFeature() {
-        CommandData result = drumTrackData.convertStringToCommandDataObj("insert hi-hat open beat 4");
-        assertEquals(DrumTrackData.INSERT, result.getCommand());
-        assertEquals(DrumTrackData.HIHAT_OPEN, result.getName());
-        assertEquals(6, result.getPositions().get(0).intValue());
-
-        CommandData result2 = drumTrackData.convertStringToCommandDataObj("insert hi-hat close beat 4");
-        assertEquals(DrumTrackData.INSERT, result2.getCommand());
-        assertEquals(DrumTrackData.HIHAT_CLOSE, result2.getName());
-        assertEquals(6, result2.getPositions().get(0).intValue());
-    }
-
-    @Test
-    public void convertStringToCommandDataError() {
-        String testCommand = "insert cat B1";
-//        assertEquals(drumTrackData.convertStringToCommandDataObj(testCommand).getCommand(), DrumTrackData.INSERT);
-//        assertEquals(drumTrackData.convertStringToCommandDataObj(testCommand).getName(), DrumTrackData.KICK);
-//        assertEquals(drumTrackData.convertStringToCommandDataObj(testCommand).getPos(), 1);
-        assertNull(drumTrackData.convertStringToCommandDataObj(testCommand));
-    }
-
-    @Test
-    /**
-     * These asserts should be the literal number array position conversion of user input commands
-     */
-    public void convertStringToCommandDataMultipleCommands() {
-        CommandData result = drumTrackData.convertStringToCommandDataObj("insert kick 123");
-        assertEquals(DrumTrackData.INSERT, result.getCommand());
-        assertEquals(DrumTrackData.KICK, result.getName());
-
-        int positionsResult = result.getPositions().get(0);
-        assertEquals(0, positionsResult);
-        int positionsResult2 = result.getPositions().get(1);
-        assertEquals(2, positionsResult2);
-        int positionsResult3 = result.getPositions().get(2);
-        assertEquals(4, positionsResult3);
-
+    public void deleteDrumHitNothingToDelete() {
+        assertFalse(drumTrackData.deleteDrumHit(DrumTrackData.SNARE, 5));
     }
 
     @Test
@@ -116,35 +82,6 @@ public class DrumTrackDataTest {
         DrumComponent result = drumTrackData.getDrumComponentList().get(0);
         assertEquals(1, result.getBeats()[0]);
         assertEquals(1, result.getBeats()[2]);
-    }
-
-    @Test
-    public void isIntegerTest() {
-        assertTrue(drumTrackData.isInteger("1234"));
-        assertFalse(drumTrackData.isInteger("hellooooo!"));
-    }
-
-    @Test
-    public void splitWithDecimals() {
-        ArrayList<String> result = drumTrackData.splitNumberString("912.546");
-        assertEquals("9", result.get(0));
-        assertEquals("1", result.get(1));
-        assertEquals("2.5", result.get(2));
-        assertEquals("4", result.get(3));
-        assertEquals("6", result.get(4));
-    }
-
-    @Test
-    public void splitNumbersStringWithInts() {
-        ArrayList<String> result = drumTrackData.splitNumberString("123");
-        assertEquals("1", result.get(0));
-        assertEquals("2", result.get(1));
-        assertEquals("3", result.get(2));
-    }
-
-    @Test
-    public void beatNumberSwitchReturnNumber() {
-        assertEquals(2, drumTrackData.beatNumberSwitchReturnNumber("2"));
     }
 
 }

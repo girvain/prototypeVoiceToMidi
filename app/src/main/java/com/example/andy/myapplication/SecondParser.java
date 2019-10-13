@@ -14,6 +14,7 @@ class SecondParser {
      * Splits google API's original string of word interpreted from user into a string
      * array, then converts anything interpreted wrong that sounds like the right words.
      * Then puts them back together in a string.
+     * NOTE: if the google API detects the spoken command perfectly, this does nothing!
      * @param input
      * @return String
      */
@@ -70,6 +71,9 @@ class SecondParser {
     public boolean kickSwitch(String word, ArrayList<String> newPhrase) {
         switch (word) {
             case "tick":
+                newPhrase.add("kick");
+                return true;
+            case "Kik":
                 newPhrase.add("kick");
                 return true;
             case "cake":

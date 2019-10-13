@@ -63,9 +63,6 @@ public class MidiPlayer {
 
         midi = new MidiFile(MidiFile.DEFAULT_RESOLUTION, tracks);
 
-
-
-
     }
 
     /**
@@ -101,27 +98,6 @@ public class MidiPlayer {
         tracks.add(noteTrack);
         midi = new MidiFile(MidiFile.DEFAULT_RESOLUTION, tracks);
     }
-
-    /**
-     * This method will most likely be called when the drumTrackData objects state changes
-     * @return
-     */
-//    public void convertDrumTrackDataToMidi(DrumTrackData drumTrackData) {
-//        MidiTrack tempoTrack = new MidiTrack();
-//        MidiTrack noteTrack = new MidiTrack();
-//
-//        for (DrumComponent drumComponent : drumTrackData.getDrumComponentList()) {
-//            for (int i = 0; i < drumComponent.getBeats().length; i++) {
-//                if (drumComponent.getBeats()[i] == 1) {
-//                    noteTrack.insertNote(9, drumComponent.getName(), 100, i*240, 140);
-//                }
-//            }
-//        }
-//        List<MidiTrack> tracks = new ArrayList<MidiTrack>();
-//        tracks.add(tempoTrack);
-//        tracks.add(noteTrack);
-//        midi = new MidiFile(MidiFile.DEFAULT_RESOLUTION, tracks);
-//    }
 
     public void writeToFile(Context context, MidiFile midi) {
         // 4. Write the MIDI data to a file
