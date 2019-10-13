@@ -14,29 +14,6 @@ public class CommandProcessor {
     static final int HIHAT_CLOSE = 42;
     static final int HIHAT_OPEN = 46;
 
-//    private DrumTrackData drumTrackData;
-
-    public CommandProcessor() {
-
-//        this.drumTrackData = drumTrackData;
-    }
-
-    /**
-     * Recieves a string version on a command, uses convertStringCommandToDataObj()
-     * to parse the command into a CommandData object. Checks the type of command
-     * and calls the commands corrisponding method, i.e addDrumHit.
-     * @param input
-     */
-//    public void processCommand(String input) {
-//        CommandData commandData = convertStringToCommandDataObj(input);
-//
-////        if (commandData != null && commandData.getCommand() == INSERT) {
-////            for (int hit : commandData.getPositions()) {
-////                drumTrackData.addDrumHit(commandData.getName(), hit);
-////            }
-////        }
-//    }
-
     public CommandData convertStringToCommandDataObj(String input) {
         String[] parsedPhraseArray = input.split(" ");
         CommandData commandData = new CommandData();
