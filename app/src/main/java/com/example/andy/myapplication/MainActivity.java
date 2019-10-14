@@ -124,13 +124,18 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void toastEmptyUndoStack() {
-        if (drumTrackData.getUndoBackStack().size() <= 1) {
             CharSequence text = "There is nothing to undo!";
             int duration = Toast.LENGTH_SHORT;
 
             Toast toast = Toast.makeText(getApplicationContext(), text, duration);
             toast.show();
-        }
+    }
+
+    public void toastMethod(CharSequence text) {
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(getApplicationContext(), text, duration);
+            toast.show();
     }
 
     @Override
@@ -150,6 +155,8 @@ public class MainActivity extends AppCompatActivity {
                     DTDResult dtdResult = drumTrackData.processCommand(newResult);
                     if (dtdResult.isUndoStackEmpty()) {
                         toastEmptyUndoStack();
+                    } else if (!dtdResult.isCommandRecognised()) {
+                        toastMethod("Command Not Recognised");
                     }
                     // Only convert and write to file if there has been a change in the state
 //                    else if (dtdResult.isStateChanged()) {

@@ -45,6 +45,7 @@ public class DrumTrackData {
      * "MainActivity" to use for displaying etc.
      * @param input
      */
+    // TODO clean this up!!!
     public DTDResult processCommand(String input) {
         DTDResult dtdResult = new DTDResult();
         stateChanged = false; // set this to false for each new command processed
@@ -56,12 +57,14 @@ public class DrumTrackData {
         ArrayList<DrumComponent> copyOfDrumComponentList = copyDrumCompList();
 
         if (commandData != null && commandData.getCommand() == INSERT) {
+            dtdResult.setCommandRecognised(true);
             for (int hit : commandData.getPositions()) {
                 if (addDrumHit(commandData.getName(), hit)) {
                     stateChanged = true;
                 }
             }
         } else if(commandData != null && commandData.getCommand() == DELETE) {
+            dtdResult.setCommandRecognised(true);
             for (int hit : commandData.getPositions()) {
                 if (deleteDrumHit(commandData.getName(), hit)) {
                     stateChanged = true;
@@ -69,8 +72,13 @@ public class DrumTrackData {
             }
         } else if (commandData != null && commandData.getCommand() == UNDO) {
             dtdResult.setUndoStackEmpty(undoBackStack.isEmpty());
+            dtdResult.setCommandRecognised(true);
             undoLastChange();
+        } else {
+            dtdResult.setCommandRecognised(false);
         }
+
+
         // add the copy of previous state of drumComponentList to the backstack
         if (stateChanged) {
             undoBackStack.push(copyOfDrumComponentList);
