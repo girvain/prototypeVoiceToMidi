@@ -27,7 +27,11 @@ public class CommandData {
                 !positions.contains(-1) // doesn't contain a -1, which is an unrecognised position
         ) {
             return true;
-        } else {
+        } // special case where the empty fields are valid because it's a single command
+        else if (command == DrumTrackData.UNDO) {
+            return true;
+        }
+        else {
             return false;
         }
     }

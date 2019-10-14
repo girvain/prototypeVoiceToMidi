@@ -5,7 +5,7 @@ package com.example.andy.myapplication;
  * for each drum
  */
 
-public class DrumComponent {
+public class DrumComponent implements Cloneable{
 
     private int name;
     private int[] beats;
@@ -13,6 +13,19 @@ public class DrumComponent {
     public DrumComponent(int name) {
         this.name = name;
         beats = new int[8]; // this is 8 8th notes in a bar
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        try {
+            super.clone();
+            DrumComponent dc = new DrumComponent(this.getName());
+            int[] arraycopy = this.getBeats().clone();
+            dc.setBeats(arraycopy);
+            return dc;
+        } catch (Exception e) {
+            return e;
+        }
     }
 
     public int getName() {

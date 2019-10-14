@@ -26,6 +26,7 @@ class SecondParser {
         for (String word : phraseArray) {
             // if they are all returned false, then the word it either ok or no relavent
             if (!insertSwitch(word, newPhrase) &&
+                    !undoSwitch(word, newPhrase) &&
                     !kickSwitch(word, newPhrase) &&
                     !snareSwitch(word, newPhrase) &&
                     !hihatSwitch(word, newPhrase) &&
@@ -38,6 +39,23 @@ class SecondParser {
         }
         String listString = String.join(" ", newPhrase);
         return listString;
+    }
+
+    public boolean undoSwitch(String word, ArrayList<String> newPhrase) {
+        switch (word) {
+            case "under":
+                newPhrase.add("undo");
+                return true;
+        }
+        return false;
+    }
+
+    // This one seems to work very consistently, so not implemented yet
+    public boolean DeleteSwitch(String word, ArrayList<String> newPhrase) {
+        switch (word) {
+
+        }
+        return false;
     }
 
     public boolean insertSwitch(String word, ArrayList<String> newPhrase) {

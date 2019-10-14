@@ -22,6 +22,8 @@ public class CommandProcessor {
         for (String word : parsedPhraseArray) {
             if (word.equals("insert")) {
                 commandData.setCommand(INSERT);
+            } else if (word.equals("undo")) {
+                commandData.setCommand(DrumTrackData.UNDO);
             } else if (word.equals("delete")) {
                 commandData.setCommand(DrumTrackData.DELETE);
             } else if (word.equals("kick")) {

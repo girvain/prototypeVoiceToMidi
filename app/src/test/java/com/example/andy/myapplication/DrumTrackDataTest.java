@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.NoSuchElementException;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -84,4 +85,81 @@ public class DrumTrackDataTest {
         assertEquals(1, result.getBeats()[2]);
     }
 
+    @Test
+    public void processCommandCheckStateNotChangedInsert() {
+        drumTrackData.processCommand("insert kick 1 2");
+        drumTrackData.processCommand("insert kick 1 2");
+        assertFalse(drumTrackData.isStateChanged());
+    }
+
+    @Test
+    public void processCommandCheckStateChangedInsert() {
+        drumTrackData.processCommand("insert kick 1 2");
+        assertTrue(drumTrackData.isStateChanged());
+    }
+
+    @Test
+    public void processCommandCheckStateNotChangedDelete() {
+        drumTrackData.processCommand("delete kick 1 2");
+        assertFalse(drumTrackData.isStateChanged());
+    }
+    @Test
+    public void processCommandCheckStateChangedDelete() {
+        drumTrackData.processCommand("insert kick 1 2");
+        drumTrackData.processCommand("delete kick 2");
+        assertTrue(drumTrackData.isStateChanged());
+    }
+
+    @Test
+    public void copyDrumCompSimpleTest() {
+        DrumComponent a = new DrumComponent(1);
+        try {
+            DrumComponent b = (DrumComponent) a.clone();
+            a.setName(500);
+            assertNotEquals(a.getName(), b.getName());
+        } catch (Exception e) {}
+
+    }
+
+    @Test
+    public void copyDrumCompList() {
+        drumTrackData.processCommand("insert kick 1 2");
+        ArrayList<DrumComponent> dc = drumTrackData.copyDrumCompList();
+        drumTrackData.processCommand("insert kick 1 2 3 4");
+
+        DrumComponent firstItemDTD = drumTrackData.getDrumComponentList().get(0);
+        DrumComponent firstItemClone = dc.get(0);
+
+        assertEquals(drumTrackData.getDrumComponentList().size(), dc.size());
+        assertNotEquals(firstItemDTD.getBeats()[6], firstItemClone.getBeats()[6]);
+    }
+
+    // TODO add more thorough testing of the backstack implementations
+    @Test
+    public void undoBackStackTestAddingViaProcessCommand() {
+        drumTrackData.processCommand("insert kick 1 2");
+        drumTrackData.processCommand("insert snare 123");
+        assertFalse(drumTrackData.getUndoBackStack().isEmpty());
+        assertEquals(drumTrackData.getUndoBackStack().size(), 2);
+    }
+
+    @Test
+    public void undoBackStackNotAddingViaProcessCommand() {
+        drumTrackData.processCommand("insert kick 1 2");
+        drumTrackData.processCommand("insert kick 1 2");
+        assertEquals(drumTrackData.getUndoBackStack().size(), 1);
+    }
+
+    @Test
+    public void undo() {
+        drumTrackData.processCommand("insert kick 1 2");
+        drumTrackData.processCommand("insert snare 12");
+        drumTrackData.undoLastChange();
+        assertEquals(drumTrackData.getDrumComponentList().size(), 1);
+    }
+
+    @Test
+    public void undoWithStackEmpty() {
+        drumTrackData.undoLastChange();
+    }
 }

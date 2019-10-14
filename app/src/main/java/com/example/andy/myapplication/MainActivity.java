@@ -8,7 +8,6 @@ import android.speech.RecognizerIntent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -124,6 +123,16 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void toastEmptyUndoStack() {
+        if (drumTrackData.getUndoBackStack().size() <= 1) {
+            CharSequence text = "There is nothing to undo!";
+            int duration = Toast.LENGTH_SHORT;
+
+            Toast toast = Toast.makeText(getApplicationContext(), text, duration);
+            toast.show();
+        }
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -137,8 +146,16 @@ public class MainActivity extends AppCompatActivity {
                     String newResult = secondParser.parseInput(result.get(0));
                     textView.setText(newResult);
 
-                    // This is the same as calling drumTrackData.addDrumHit but with voice input
-                    drumTrackData.processCommand(newResult);
+                    // get a result object from DrumTrackData's parseCommand
+                    DTDResult dtdResult = drumTrackData.processCommand(newResult);
+                    if (dtdResult.isUndoStackEmpty()) {
+                        toastEmptyUndoStack();
+                    }
+                    // Only convert and write to file if there has been a change in the state
+//                    else if (dtdResult.isStateChanged()) {
+//
+//                    }
+
                     midiPlayer.convertDrumTrackDataToMidi(drumTrackData, 40);
                     midiPlayer.writeToFile(getApplicationContext(), midiPlayer.getMidi());
 
