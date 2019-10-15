@@ -17,7 +17,6 @@ public class CommandProcessor {
     public CommandData convertStringToCommandDataObj(String input) {
         String[] parsedPhraseArray = input.split(" ");
         CommandData commandData = new CommandData();
-        boolean isHihat = false;
 
         for (String word : parsedPhraseArray) {
             if (word.equals("insert")) {
@@ -26,15 +25,16 @@ public class CommandProcessor {
                 commandData.setCommand(DrumTrackData.UNDO);
             } else if (word.equals("delete")) {
                 commandData.setCommand(DrumTrackData.DELETE);
+            } else if (word.equals("reset")) {
+                commandData.setCommand(DrumTrackData.RESET);
             } else if (word.equals("kick")) {
                 commandData.setName(KICK);
             } else if (word.equals("snare")) {
                 commandData.setName(SNARE);
             } else if (word.equals("hi-hat")) {
-                isHihat = true;
-            } else if (isHihat) {
+                commandData.setName(DrumTrackData.HIHAT_CLOSE);
+            } else if (word.equals("open") || word.equals("close")) {
                 hihatSwitch(word, commandData);
-                isHihat = false;
             } else if (isInteger(word)) {
                 longNumberStringToCommandData(word, commandData);
             } else {
@@ -44,6 +44,7 @@ public class CommandProcessor {
                 beatNumberSwitch(word, commandData);
             }
         }
+        // Use the commandData's validation methods to avoid errors
         if (commandData.validate()) {
             return commandData;
         } else {
@@ -80,6 +81,8 @@ public class CommandProcessor {
             case "close":
                 commandData.setName(HIHAT_CLOSE);
                 break;
+            default:
+                commandData.setName(HIHAT_CLOSE);
         }
     }
 

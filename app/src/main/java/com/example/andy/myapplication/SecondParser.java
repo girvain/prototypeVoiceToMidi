@@ -123,6 +123,18 @@ class SecondParser {
         return false;
     }
 
+    /**
+     * This method is the same as all the other switch methods except it used a two word buffer
+     * mechanism. The problem is having to read to words that function together as one, i.e
+     * "how high" is a phrase that is to be converted to hi-hat. The problem is solved with a buffer
+     * twoWordBuffer (which has class level scope) that stores the first word of a pair. On the next
+     * iteration of the parent method loop the switch will be called again but when it reaches the
+     * second word of a two word pair it will check the buffer for it's first word pair and if it
+     * matches, it will set the newPhrase to contain the word "hi-hat", then reset the buffer.
+     * @param word
+     * @param newPhrase
+     * @return
+     */
     public boolean hihatSwitch(String word, ArrayList<String> newPhrase) {
         switch (word) {
             case "hihat":
@@ -162,6 +174,15 @@ class SecondParser {
                 twoWordBuffer = "high";
                 return true;
             case "how":
+                if (twoWordBuffer.equals("high")) {
+                    newPhrase.add("hi-hat");
+                    twoWordBuffer = ""; // reset the buffer
+                    return true;
+                }
+            case "hi":
+                twoWordBuffer = "hi";
+                return true;
+            case "Hat":
                 if (twoWordBuffer.equals("high")) {
                     newPhrase.add("hi-hat");
                     twoWordBuffer = ""; // reset the buffer

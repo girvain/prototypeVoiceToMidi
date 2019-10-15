@@ -9,7 +9,7 @@ import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /**
- * This class will be to manage the stateChanged of the drum components and hold them
+ * This class will be to manage the state of the drum components and hold them
  * in a container.
  */
 public class DrumTrackData {
@@ -17,6 +17,7 @@ public class DrumTrackData {
     static final int INSERT = 500;
     static final int DELETE = 501;
     static final int UNDO = 502;
+    static final int RESET = 503;
     static final int KICK = 36;
     static final int SNARE = 38;
     static final int HIHAT_CLOSE = 42;
@@ -45,7 +46,6 @@ public class DrumTrackData {
      * "MainActivity" to use for displaying etc.
      * @param input
      */
-    // TODO clean this up!!!
     public DTDResult processCommand(String input) {
         DTDResult dtdResult = new DTDResult();
         stateChanged = false; // set this to false for each new command processed
@@ -57,27 +57,21 @@ public class DrumTrackData {
         ArrayList<DrumComponent> copyOfDrumComponentList = copyDrumCompList();
 
         if (commandData != null && commandData.getCommand() == INSERT) {
-            dtdResult.setCommandRecognised(true);
-            for (int hit : commandData.getPositions()) {
-                if (addDrumHit(commandData.getName(), hit)) {
-                    stateChanged = true;
-                }
-            }
+            insertHandler(commandData); // perform action using commmandData
+            dtdResult.setCommandRecognised(true); // set result Object accordingly
         } else if(commandData != null && commandData.getCommand() == DELETE) {
+            deleteHandler(commandData);
             dtdResult.setCommandRecognised(true);
-            for (int hit : commandData.getPositions()) {
-                if (deleteDrumHit(commandData.getName(), hit)) {
-                    stateChanged = true;
-                }
-            }
         } else if (commandData != null && commandData.getCommand() == UNDO) {
             dtdResult.setUndoStackEmpty(undoBackStack.isEmpty());
             dtdResult.setCommandRecognised(true);
             undoLastChange();
+        } else if (commandData != null && commandData.getCommand() == RESET) {
+            drumComponentList.clear();
+            dtdResult.setCommandRecognised(true);
         } else {
             dtdResult.setCommandRecognised(false);
         }
-
 
         // add the copy of previous state of drumComponentList to the backstack
         if (stateChanged) {
@@ -85,10 +79,34 @@ public class DrumTrackData {
         }
 
         return dtdResult;
-
     }
 
-    // TODO create better error handling and Interface update of undo stack empty instead od swallowing errors
+
+    /**
+     * Hander method for Insert commands. Loops through a commandData objects positions arrayList
+     * and calls addDrumHit for each position.
+     * @param commandData
+     */
+    public void insertHandler(CommandData commandData) {
+        for (int hit : commandData.getPositions()) {
+            if (addDrumHit(commandData.getName(), hit)) {
+                stateChanged = true;
+            }
+        }
+    }
+
+    /**
+     * Same as insertHandler but with DELETE commands
+     * @param commandData
+     */
+    public void deleteHandler(CommandData commandData) {
+        for (int hit : commandData.getPositions()) {
+            if (deleteDrumHit(commandData.getName(), hit)) {
+                stateChanged = true;
+            }
+        }
+    }
+
     /**
      * Method to take the most recent drumComponentList pushed to the backstack and swap it with the current
       */

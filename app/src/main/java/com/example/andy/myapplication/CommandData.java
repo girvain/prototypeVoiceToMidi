@@ -31,6 +31,9 @@ public class CommandData {
         else if (command == DrumTrackData.UNDO) {
             return true;
         }
+        else if (command == DrumTrackData.RESET) {
+            return true;
+        }
         else {
             return false;
         }

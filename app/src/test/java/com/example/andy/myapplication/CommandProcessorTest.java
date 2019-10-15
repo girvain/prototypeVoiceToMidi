@@ -27,6 +27,14 @@ public class CommandProcessorTest {
     }
 
     @Test
+    public void convertStringToCommandDataHiHatMissingOpenAndClose() {
+        CommandData result = commandProcessor.convertStringToCommandDataObj("insert hi-hat 4");
+        assertEquals(DrumTrackData.INSERT, result.getCommand());
+        assertEquals(DrumTrackData.HIHAT_CLOSE, result.getName());
+        assertEquals(6, result.getPositions().get(0).intValue());
+    }
+
+    @Test
     public void convertStringToCommandDataHihatFeature() {
         CommandData result = commandProcessor.convertStringToCommandDataObj("insert hi-hat open beat 4");
         assertEquals(DrumTrackData.INSERT, result.getCommand());

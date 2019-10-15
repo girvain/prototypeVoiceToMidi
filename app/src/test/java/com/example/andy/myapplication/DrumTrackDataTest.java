@@ -140,14 +140,14 @@ public class DrumTrackDataTest {
         drumTrackData.processCommand("insert kick 1 2");
         drumTrackData.processCommand("insert snare 123");
         assertFalse(drumTrackData.getUndoBackStack().isEmpty());
-        assertEquals(drumTrackData.getUndoBackStack().size(), 2);
+        assertEquals(2, drumTrackData.getUndoBackStack().size());
     }
 
     @Test
     public void undoBackStackNotAddingViaProcessCommand() {
         drumTrackData.processCommand("insert kick 1 2");
         drumTrackData.processCommand("insert kick 1 2");
-        assertEquals(drumTrackData.getUndoBackStack().size(), 1);
+        assertEquals(1, drumTrackData.getUndoBackStack().size());
     }
 
     @Test
@@ -155,11 +155,23 @@ public class DrumTrackDataTest {
         drumTrackData.processCommand("insert kick 1 2");
         drumTrackData.processCommand("insert snare 12");
         drumTrackData.undoLastChange();
-        assertEquals(drumTrackData.getDrumComponentList().size(), 1);
+        assertEquals(1,drumTrackData.getDrumComponentList().size());
     }
 
     @Test
     public void undoWithStackEmpty() {
         drumTrackData.undoLastChange();
+    }
+
+    @Test
+    public void reset() {
+        drumTrackData.processCommand("insert kick 1 2");
+        drumTrackData.processCommand("reset");
+        assertEquals(0, drumTrackData.getDrumComponentList().size());
+    }
+
+    @Test
+    public void resetWithEmpty() {
+        drumTrackData.processCommand("reset");
     }
 }
