@@ -73,6 +73,20 @@ public class CommandProcessorTest {
     }
 
     @Test
+    public void convertStringToCommandDataMultiCommandDecimals() {
+        CommandData result = commandProcessor.convertStringToCommandDataObj("insert kick 12.5");
+
+        assertEquals(DrumTrackData.INSERT, result.getCommand());
+        assertEquals(DrumTrackData.KICK, result.getName());
+
+        int positionsResult = result.getPositions().get(0);
+        assertEquals(0, positionsResult);
+        int positionsResult2 = result.getPositions().get(1);
+        assertEquals(3, positionsResult2);
+
+    }
+
+    @Test
     public void convertStringToCommandDataTempoSwitch() {
        CommandData result = commandProcessor.convertStringToCommandDataObj("tempo 120");
         assertEquals(DrumTrackData.SET_TEMPO, result.getCommand());
@@ -95,6 +109,11 @@ public class CommandProcessorTest {
     }
 
     @Test
+    public void isIntegerTestDecimal() {
+        assertTrue(commandProcessor.isInteger("12.5"));
+    }
+
+    @Test
     public void splitWithDecimals() {
         ArrayList<String> result = commandProcessor.splitNumberString("912.546");
         assertEquals("9", result.get(0));
@@ -102,6 +121,13 @@ public class CommandProcessorTest {
         assertEquals("2.5", result.get(2));
         assertEquals("4", result.get(3));
         assertEquals("6", result.get(4));
+    }
+
+    @Test
+    public void splitNumberStringWithOneDecimal() {
+        ArrayList<String> result = commandProcessor.splitNumberString("12.5");
+        assertEquals("1", result.get(0));
+        assertEquals("2.5", result.get(1));
     }
 
     @Test

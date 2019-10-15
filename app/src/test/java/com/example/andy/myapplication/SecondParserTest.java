@@ -79,4 +79,5 @@ public class SecondParserTest {
         assertEquals("insert kick beat 1", sp.parseInput("desert cake beat 1"));
 
     }
+
 }

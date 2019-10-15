@@ -172,8 +172,15 @@ public class CommandProcessor {
     }
 
     // TODO Possibly take out isInteger and splitNumberString to a utility object
+//    public boolean isInteger(String s) {
+//        if (s.matches("-?\\d+")) {
+//            return true;
+//        }
+//        return false;
+//    }
+
     public boolean isInteger(String s) {
-        if (s.matches("-?\\d+")) {
+        if (s.matches("(\\d+(?:\\.\\d+)?)")) {
             return true;
         }
         return false;

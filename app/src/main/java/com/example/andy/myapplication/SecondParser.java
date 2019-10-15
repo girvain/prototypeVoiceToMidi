@@ -26,6 +26,7 @@ class SecondParser {
         for (String word : phraseArray) {
             // if they are all returned false, then the word it either ok or no relavent
             if (!insertSwitch(word, newPhrase) &&
+                    !deleteSwitch(word, newPhrase) &&
                     !undoSwitch(word, newPhrase) &&
                     !tempoSwitch(word, newPhrase) &&
                     !kickSwitch(word, newPhrase) &&
@@ -61,9 +62,11 @@ class SecondParser {
     }
 
     // This one seems to work very consistently, so not implemented yet
-    public boolean DeleteSwitch(String word, ArrayList<String> newPhrase) {
+    public boolean deleteSwitch(String word, ArrayList<String> newPhrase) {
         switch (word) {
-
+            case "remove":
+                newPhrase.add("delete");
+                return true;
         }
         return false;
     }
@@ -127,6 +130,9 @@ class SecondParser {
                 newPhrase.add("snare");
                 return true;
             case "near":
+                newPhrase.add("snare");
+                return true;
+            case "search":
                 newPhrase.add("snare");
                 return true;
         }
