@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
         mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
             @Override
             public void onPrepared(MediaPlayer mp) {
-               playPauseVisabilitySetup();
+//               playPauseVisabilitySetup();
             }
         });
 
@@ -121,6 +121,11 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public void hidePlayPause() {
+        playButton.setVisibility(View.INVISIBLE);
+        pauseButton.setVisibility(View.INVISIBLE);
+    }
+
     public void loadFileIntoMediaPlayer() {
         File file = getApplicationContext().getFileStreamPath("exampleout.mid");
         Uri uri = Uri.fromFile(file);
@@ -130,11 +135,12 @@ public class MainActivity extends AppCompatActivity {
             mediaPlayer.setDataSource(getApplicationContext(), uri);
         } catch (Exception e) {
             // SORT THIS LATER!!!
+            hidePlayPause();
         }
         try {
             mediaPlayer.prepare();
         } catch (Exception e) {
-
+            hidePlayPause();
         }
 
     }
@@ -171,13 +177,16 @@ public class MainActivity extends AppCompatActivity {
                     DTDResult dtdResult = drumTrackData.processCommand(newResult);
                     if (dtdResult.isUndoStackEmpty()) {
                         toastEmptyUndoStack();
+                        pauseButton.setVisibility(View.INVISIBLE);
                     } else if (!dtdResult.isCommandRecognised()) {
                         toastMethod("Command Not Recognised");
                     } else if (dtdResult.isReset()) {
                         // the media player needs to clear file it was playing as the drumTrackData
                         // has been wiped of it's state.
                         mediaPlayer.reset();
+                        pauseButton.setVisibility(View.INVISIBLE);
                     }
+
                     // Only convert and write to file if there has been a change in the state
 //                    else if (dtdResult.isStateChanged()) {
 //
@@ -187,8 +196,17 @@ public class MainActivity extends AppCompatActivity {
                     midiPlayer.writeToFile(getApplicationContext(), midiPlayer.getMidi());
 
                     loadFileIntoMediaPlayer();
-//                    pauseButton.setVisibility(View.VISIBLE);
+
                     mediaPlayer.start();
+                    // check for an empty drumComponentList and remove play/pause buttons as
+                    // there is nothing to be played or paused when this happens. Otherwise,
+                    // display buttons with playPauseVisabilitySetup().
+                    if (dtdResult.isCommponentListEmpty()) {
+                        hidePlayPause();
+                    } else {
+                        playPauseVisabilitySetup();
+                    }
+
                 }
                 break;
             }

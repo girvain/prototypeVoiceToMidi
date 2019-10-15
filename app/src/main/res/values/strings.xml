@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Beat Boy</string>
+    <string name="tempo_label">Tempo: </string>
 </resources>

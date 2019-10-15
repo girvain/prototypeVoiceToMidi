@@ -82,6 +82,10 @@ public class DrumTrackData {
         if (stateChanged) {
             undoBackStack.push(copyOfDrumComponentList);
         }
+        // set wither there are components on the result so play/stop know to be displayed
+        if (drumComponentList.isEmpty()) {
+            dtdResult.setCommponentListEmpty(true);
+        }
 
         return dtdResult;
     }
@@ -125,7 +129,7 @@ public class DrumTrackData {
      * Method to take the most recent drumComponentList pushed to the backstack and swap it with the current
       */
     public boolean undoLastChange() {
-        if (undoBackStack.size() >= 1) {
+        if (undoBackStack.size() > 0) {
             drumComponentList = undoBackStack.pop();
             return true;
         } else

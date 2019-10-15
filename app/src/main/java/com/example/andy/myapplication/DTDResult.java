@@ -9,11 +9,8 @@ public class DTDResult {
     private boolean undoStackEmpty;
     private boolean commandRecognised;
     private boolean reset;
+    private boolean commponentListEmpty;
 
-//    public DTDResult(boolean stateChanged, boolean undoStackEmpty) {
-//        this.stateChanged = stateChanged;
-//        this.undoStackEmpty = undoStackEmpty;
-//    }
 
     public boolean isStateChanged() {
         return stateChanged;
@@ -45,5 +42,13 @@ public class DTDResult {
 
     public void setReset(boolean reset) {
         this.reset = reset;
+    }
+
+    public boolean isCommponentListEmpty() {
+        return commponentListEmpty;
+    }
+
+    public void setCommponentListEmpty(boolean commponentListEmpty) {
+        this.commponentListEmpty = commponentListEmpty;
     }
 }
