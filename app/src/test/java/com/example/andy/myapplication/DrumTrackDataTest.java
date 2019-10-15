@@ -111,6 +111,18 @@ public class DrumTrackDataTest {
     }
 
     @Test
+    public void processCommandWithTempo() {
+       drumTrackData.processCommand("tempo 140");
+       assertEquals(140, drumTrackData.getTempo());
+    }
+
+    @Test
+    public void processCommandWithTempoCommandNotRecog() {
+        DTDResult result = drumTrackData.processCommand("tempo -3");
+        assertFalse(result.isCommandRecognised());
+    }
+
+    @Test
     public void copyDrumCompSimpleTest() {
         DrumComponent a = new DrumComponent(1);
         try {

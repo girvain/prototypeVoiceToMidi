@@ -7,9 +7,11 @@ import static org.junit.Assert.*;
 
 public class MidiPlayerTest {
 
+    MidiPlayer midiPlayer;
 
     @Before
     public void setUp() throws Exception {
+       midiPlayer = new MidiPlayer();
     }
 
     @Test

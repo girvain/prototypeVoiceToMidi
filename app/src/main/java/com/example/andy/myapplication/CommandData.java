@@ -3,12 +3,13 @@ package com.example.andy.myapplication;
 import java.util.ArrayList;
 
 /**
- *
+ * TODO remove pos from this class and test
  */
 public class CommandData {
     private int command; // insert, delete etc
     private int name; // kick, snare etc
     private int pos; // beat
+    private int tempoValue;
     private ArrayList<Integer> positions;
 
 
@@ -33,6 +34,11 @@ public class CommandData {
         }
         else if (command == DrumTrackData.RESET) {
             return true;
+        } else if (command == DrumTrackData.SET_TEMPO) {
+            if (tempoValue > 0 && tempoValue < 300) {
+                return true;
+            } else
+                return false;
         }
         else {
             return false;
@@ -69,5 +75,13 @@ public class CommandData {
 
     public void setPos(int pos) {
         this.pos = pos;
+    }
+
+    public int getTempoValue() {
+        return tempoValue;
+    }
+
+    public void setTempoValue(int tempoValue) {
+        this.tempoValue = tempoValue;
     }
 }

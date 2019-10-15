@@ -65,12 +65,26 @@ public class MidiPlayer {
 
     }
 
+    public void setTempo(MidiTrack tempoTrack, int bpm) {
+        // time signiture is 4/4 always at current moment of development
+        TimeSignature ts = new TimeSignature();
+        ts.setTimeSignature(4, 4, TimeSignature.DEFAULT_METER, TimeSignature.DEFAULT_DIVISION);
+
+        Tempo tempo = new Tempo();
+        tempo.setBpm(bpm);
+
+        tempoTrack.insertEvent(ts);
+        tempoTrack.insertEvent(tempo);
+    }
+
     /**
      * Method to multiply the initial MIDI track bar into multiple bars
      */
     public void convertDrumTrackDataToMidi(DrumTrackData drumTrackData, int bars) {
         MidiTrack tempoTrack = new MidiTrack();
         MidiTrack noteTrack = new MidiTrack();
+
+        setTempo(tempoTrack, drumTrackData.getTempo());
 
         for (DrumComponent drumComponent : drumTrackData.getDrumComponentList()) {
             for (int i = 0; i < drumComponent.getBeats().length; i++) {

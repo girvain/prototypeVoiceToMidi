@@ -2,8 +2,6 @@ package com.example.andy.myapplication;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnit;
 
 import java.util.ArrayList;
 
@@ -74,6 +72,21 @@ public class CommandProcessorTest {
 
     }
 
+    @Test
+    public void convertStringToCommandDataTempoSwitch() {
+       CommandData result = commandProcessor.convertStringToCommandDataObj("tempo 120");
+        assertEquals(DrumTrackData.SET_TEMPO, result.getCommand());
+        assertEquals(120, result.getTempoValue());
+    }
+
+    @Test
+    public void convertStringToCommandDataTempoSwitchBoundryData() {
+        CommandData result = commandProcessor.convertStringToCommandDataObj("tempo -1");
+        assertNull(result);
+
+        CommandData result2 = commandProcessor.convertStringToCommandDataObj("tempo 500");
+        assertNull(result2);
+    }
 
     @Test
     public void isIntegerTest() {

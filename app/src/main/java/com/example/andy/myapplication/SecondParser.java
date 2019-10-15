@@ -27,6 +27,7 @@ class SecondParser {
             // if they are all returned false, then the word it either ok or no relavent
             if (!insertSwitch(word, newPhrase) &&
                     !undoSwitch(word, newPhrase) &&
+                    !tempoSwitch(word, newPhrase) &&
                     !kickSwitch(word, newPhrase) &&
                     !snareSwitch(word, newPhrase) &&
                     !hihatSwitch(word, newPhrase) &&
@@ -45,6 +46,15 @@ class SecondParser {
         switch (word) {
             case "under":
                 newPhrase.add("undo");
+                return true;
+        }
+        return false;
+    }
+
+    public boolean tempoSwitch(String word, ArrayList<String> newPhrase) {
+        switch (word) {
+            case "temple":
+                newPhrase.add("tempo");
                 return true;
         }
         return false;

@@ -1,12 +1,8 @@
 package com.example.andy.myapplication;
 
-import android.util.Log;
-
 import java.util.ArrayDeque;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Iterator;
-import java.util.NoSuchElementException;
 
 /**
  * This class will be to manage the state of the drum components and hold them
@@ -14,6 +10,7 @@ import java.util.NoSuchElementException;
  */
 public class DrumTrackData {
 
+    // command constants
     static final int INSERT = 500;
     static final int DELETE = 501;
     static final int UNDO = 502;
@@ -22,16 +19,19 @@ public class DrumTrackData {
     static final int SNARE = 38;
     static final int HIHAT_CLOSE = 42;
     static final int HIHAT_OPEN = 46;
+    static final int SET_TEMPO = 504;
 
     private ArrayList<DrumComponent> drumComponentList;
     private CommandProcessor commandProcessor;
     private ArrayDeque<ArrayList> undoBackStack;
     private boolean stateChanged;
+    private int tempo;
 
     public DrumTrackData(CommandProcessor commandProcessor) {
         this.drumComponentList = new ArrayList<>();
         this.commandProcessor = commandProcessor;
         this.undoBackStack = new ArrayDeque<>();
+        this.tempo = 120; // set a default tempo to start with
     }
 
     /**
@@ -69,7 +69,11 @@ public class DrumTrackData {
         } else if (commandData != null && commandData.getCommand() == RESET) {
             drumComponentList.clear();
             dtdResult.setCommandRecognised(true);
-        } else {
+        } else if (commandData != null && commandData.getCommand() == SET_TEMPO) {
+            tempo = commandData.getTempoValue();
+            dtdResult.setCommandRecognised(true);
+        }
+        else {
             dtdResult.setCommandRecognised(false);
         }
 
@@ -185,5 +189,9 @@ public class DrumTrackData {
 
     public ArrayDeque<ArrayList> getUndoBackStack() {
         return undoBackStack;
+    }
+
+    public int getTempo() {
+        return tempo;
     }
 }

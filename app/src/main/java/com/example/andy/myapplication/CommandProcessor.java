@@ -17,6 +17,7 @@ public class CommandProcessor {
     public CommandData convertStringToCommandDataObj(String input) {
         String[] parsedPhraseArray = input.split(" ");
         CommandData commandData = new CommandData();
+        boolean isTempoCommand = false;
 
         for (String word : parsedPhraseArray) {
             if (word.equals("insert")) {
@@ -27,6 +28,9 @@ public class CommandProcessor {
                 commandData.setCommand(DrumTrackData.DELETE);
             } else if (word.equals("reset")) {
                 commandData.setCommand(DrumTrackData.RESET);
+            }else if (word.equals("tempo")) {
+               commandData.setCommand(DrumTrackData.SET_TEMPO);
+               isTempoCommand = true;
             } else if (word.equals("kick")) {
                 commandData.setName(KICK);
             } else if (word.equals("snare")) {
@@ -35,6 +39,8 @@ public class CommandProcessor {
                 commandData.setName(DrumTrackData.HIHAT_CLOSE);
             } else if (word.equals("open") || word.equals("close")) {
                 hihatSwitch(word, commandData);
+            } else if (isTempoCommand) {
+                tempoSwitch(word, commandData);
             } else if (isInteger(word)) {
                 longNumberStringToCommandData(word, commandData);
             } else {
@@ -49,6 +55,13 @@ public class CommandProcessor {
             return commandData;
         } else {
             return null;
+        }
+    }
+
+    public void tempoSwitch(String word, CommandData commandData) {
+        if (isInteger(word)) {
+            int parsedInt = Integer.parseInt(word);
+            commandData.setTempoValue(parsedInt);
         }
     }
 

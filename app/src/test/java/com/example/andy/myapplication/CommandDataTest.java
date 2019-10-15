@@ -39,4 +39,17 @@ public class CommandDataTest {
 
         assertFalse(commandData.validate());
     }
+
+    @Test
+    public void validateTempoWithMissingTempoValue() {
+        commandData.setCommand(DrumTrackData.SET_TEMPO);
+        assertFalse(commandData.validate());
+    }
+
+    @Test
+    public void validateTempo() {
+        commandData.setCommand(DrumTrackData.SET_TEMPO);
+        commandData.setTempoValue(140);
+        assertTrue(commandData.validate());
+    }
 }
