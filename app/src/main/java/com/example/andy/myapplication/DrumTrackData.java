@@ -67,7 +67,8 @@ public class DrumTrackData {
             dtdResult.setCommandRecognised(true);
             undoLastChange();
         } else if (commandData != null && commandData.getCommand() == RESET) {
-            drumComponentList.clear();
+            resetHandler();
+            dtdResult.setReset(true);
             dtdResult.setCommandRecognised(true);
         } else if (commandData != null && commandData.getCommand() == SET_TEMPO) {
             tempo = commandData.getTempoValue();
@@ -84,6 +85,7 @@ public class DrumTrackData {
 
         return dtdResult;
     }
+
 
 
     /**
@@ -109,6 +111,14 @@ public class DrumTrackData {
                 stateChanged = true;
             }
         }
+    }
+
+    /**
+     * not much to see but improves readability in the code it's used in, processCommand().
+     */
+    public void resetHandler() {
+        drumComponentList.clear();
+        stateChanged = true;
     }
 
     /**

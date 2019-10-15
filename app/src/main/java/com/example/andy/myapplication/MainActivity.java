@@ -75,6 +75,20 @@ public class MainActivity extends AppCompatActivity {
                 mp.reset();
             }
         });
+        mediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
+            @Override
+            public boolean onError(MediaPlayer mp, int what, int extra) {
+                pauseButton.setVisibility(View.INVISIBLE);
+                playButton.setVisibility(View.INVISIBLE);
+                return false;
+            }
+        });
+        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+            @Override
+            public void onPrepared(MediaPlayer mp) {
+               playPauseVisabilitySetup();
+            }
+        });
 
         playButton = findViewById(R.id.play_button);
         playButton.setOnClickListener(new View.OnClickListener() {
@@ -111,6 +125,8 @@ public class MainActivity extends AppCompatActivity {
         File file = getApplicationContext().getFileStreamPath("exampleout.mid");
         Uri uri = Uri.fromFile(file);
         try {
+            // this needs reset coz mediaplayer holds onto files even when they are re-written at source
+            mediaPlayer.reset();
             mediaPlayer.setDataSource(getApplicationContext(), uri);
         } catch (Exception e) {
             // SORT THIS LATER!!!
@@ -157,6 +173,10 @@ public class MainActivity extends AppCompatActivity {
                         toastEmptyUndoStack();
                     } else if (!dtdResult.isCommandRecognised()) {
                         toastMethod("Command Not Recognised");
+                    } else if (dtdResult.isReset()) {
+                        // the media player needs to clear file it was playing as the drumTrackData
+                        // has been wiped of it's state.
+                        mediaPlayer.reset();
                     }
                     // Only convert and write to file if there has been a change in the state
 //                    else if (dtdResult.isStateChanged()) {
@@ -167,7 +187,7 @@ public class MainActivity extends AppCompatActivity {
                     midiPlayer.writeToFile(getApplicationContext(), midiPlayer.getMidi());
 
                     loadFileIntoMediaPlayer();
-                    pauseButton.setVisibility(View.VISIBLE);
+//                    pauseButton.setVisibility(View.VISIBLE);
                     mediaPlayer.start();
                 }
                 break;
