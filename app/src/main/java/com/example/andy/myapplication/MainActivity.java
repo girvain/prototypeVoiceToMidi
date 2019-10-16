@@ -1,9 +1,14 @@
 package com.example.andy.myapplication;
 
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
+import android.media.AudioAttributes;
+import android.media.AudioFocusRequest;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.speech.RecognizerIntent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,6 +20,7 @@ import android.widget.Toast;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Locale;
+import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
     private ImageView playButton;
     private ImageView pauseButton;
 
+    private AudioManager mAudioManager;
+    private AudioManager.OnAudioFocusChangeListener afChangeListener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,12 +69,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
         secondParser = new SecondParser();
         drumTrackData = new DrumTrackData(new CommandProcessor());
 
-
         midiPlayer = new MidiPlayer();
-        midiPlayer.writeToFile(this, midiPlayer.getMidi());
+
 
         mediaPlayer = new MediaPlayer();
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
@@ -83,12 +91,6 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-        mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-            @Override
-            public void onPrepared(MediaPlayer mp) {
-//               playPauseVisabilitySetup();
-            }
-        });
 
         playButton = findViewById(R.id.play_button);
         playButton.setOnClickListener(new View.OnClickListener() {
@@ -96,6 +98,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 mediaPlayer.start();
                 playPauseVisabilitySetup();
+                requestAudioFocus();
             }
         });
 
@@ -105,8 +108,34 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View v) {
                 mediaPlayer.pause();
                 playPauseVisabilitySetup();
+                requestAudioFocus();
             }
         });
+
+
+        mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        afChangeListener = new AudioManager.OnAudioFocusChangeListener() {
+            @Override
+            public void onAudioFocusChange(int focusChange) {
+                if (focusChange == AudioManager.AUDIOFOCUS_LOSS) {
+                    // Permanent loss of audio focus
+                    // Pause playback immediately
+                    mediaPlayer.pause();
+                    playPauseVisabilitySetup();
+                } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT) {
+                    // Pause playback
+                    mediaPlayer.pause();
+                    playPauseVisabilitySetup();
+                } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK) {
+                    // Lower the volume, keep playing
+                } else if (focusChange == AudioManager.AUDIOFOCUS_GAIN) {
+                    // Your app has been granted audio focus again
+                    // Raise volume to normal, restart playback if necessary
+                    mediaPlayer.start();
+
+                }
+            }
+        };
 
     }
 
@@ -160,6 +189,12 @@ public class MainActivity extends AppCompatActivity {
             toast.show();
     }
 
+    public void requestAudioFocus() {
+        mAudioManager.requestAudioFocus(afChangeListener,
+                AudioManager.STREAM_MUSIC,
+                AudioManager.AUDIOFOCUS_GAIN);
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -197,6 +232,7 @@ public class MainActivity extends AppCompatActivity {
 
                     loadFileIntoMediaPlayer();
 
+                    requestAudioFocus();
                     mediaPlayer.start();
                     // check for an empty drumComponentList and remove play/pause buttons as
                     // there is nothing to be played or paused when this happens. Otherwise,
@@ -212,4 +248,5 @@ public class MainActivity extends AppCompatActivity {
             }
         }
     }
+
 }

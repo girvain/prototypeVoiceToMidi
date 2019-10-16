@@ -32,36 +32,36 @@ public class MidiPlayer {
 
 
 
-        // 2. Add events to the tracks
-        // Track 0 is the tempo map
-        TimeSignature ts = new TimeSignature();
-        ts.setTimeSignature(4, 4, TimeSignature.DEFAULT_METER, TimeSignature.DEFAULT_DIVISION);
+//        // 2. Add events to the tracks
+//        // Track 0 is the tempo map
+//        TimeSignature ts = new TimeSignature();
+//        ts.setTimeSignature(4, 4, TimeSignature.DEFAULT_METER, TimeSignature.DEFAULT_DIVISION);
+//
+//        Tempo tempo = new Tempo();
+//        tempo.setBpm(120);
+//
+//        tempoTrack.insertEvent(ts);
+//        tempoTrack.insertEvent(tempo);
+//
+//        // Temp data
+//        noteTrack.insertNote(9, KICK, 100, 0 * 480, 140);
+//        noteTrack.insertNote(9, SNARE, 100, 0 * 480, 140);
+//        noteTrack.insertNote(9, SNARE, 100, 480, 140);
+//        noteTrack.insertNote(9, KICK, 100, 2 * 480, 140);
+//        noteTrack.insertNote(9, KICK, 100, 3 * 480, 140);
+//
+//        noteTrack.insertNote(9, HIHAT_CLOSE, 70, 0 * 480, 140);
+//        noteTrack.insertNote(9, HIHAT_CLOSE, 70, 1 * 480, 140);
+//        noteTrack.insertNote(9, HIHAT_CLOSE, 80, 2 * 480, 140);
+//        noteTrack.insertNote(9, HIHAT_CLOSE, 70, 3 * 480, 140);
 
-        Tempo tempo = new Tempo();
-        tempo.setBpm(120);
 
-        tempoTrack.insertEvent(ts);
-        tempoTrack.insertEvent(tempo);
-
-        // Temp data
-        noteTrack.insertNote(9, KICK, 100, 0 * 480, 140);
-        noteTrack.insertNote(9, SNARE, 100, 0 * 480, 140);
-        noteTrack.insertNote(9, SNARE, 100, 480, 140);
-        noteTrack.insertNote(9, KICK, 100, 2 * 480, 140);
-        noteTrack.insertNote(9, KICK, 100, 3 * 480, 140);
-
-        noteTrack.insertNote(9, HIHAT_CLOSE, 70, 0 * 480, 140);
-        noteTrack.insertNote(9, HIHAT_CLOSE, 70, 1 * 480, 140);
-        noteTrack.insertNote(9, HIHAT_CLOSE, 80, 2 * 480, 140);
-        noteTrack.insertNote(9, HIHAT_CLOSE, 70, 3 * 480, 140);
-
-
-        // 3. Create a MidiFile with the tracks we created
-        List<MidiTrack> tracks = new ArrayList<MidiTrack>();
-        tracks.add(tempoTrack);
-        tracks.add(noteTrack);
-
-        midi = new MidiFile(MidiFile.DEFAULT_RESOLUTION, tracks);
+//        // 3. Create a MidiFile with the tracks we created
+//        List<MidiTrack> tracks = new ArrayList<MidiTrack>();
+//        tracks.add(tempoTrack);
+//        tracks.add(noteTrack);
+//
+//        midi = new MidiFile(MidiFile.DEFAULT_RESOLUTION, tracks);
 
     }
 
