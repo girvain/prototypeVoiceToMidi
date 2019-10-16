@@ -9,7 +9,8 @@ public class DTDResult {
     private boolean undoStackEmpty;
     private boolean commandRecognised;
     private boolean reset;
-    private boolean commponentListEmpty;
+    private boolean componentListEmpty;
+    private boolean tempoChanged;
 
 
     public boolean isStateChanged() {
@@ -44,11 +45,19 @@ public class DTDResult {
         this.reset = reset;
     }
 
-    public boolean isCommponentListEmpty() {
-        return commponentListEmpty;
+    public boolean isComponentListEmpty() {
+        return componentListEmpty;
     }
 
-    public void setCommponentListEmpty(boolean commponentListEmpty) {
-        this.commponentListEmpty = commponentListEmpty;
+    public void setComponentListEmpty(boolean componentListEmpty) {
+        this.componentListEmpty = componentListEmpty;
+    }
+
+    public boolean isTempoChanged() {
+        return tempoChanged;
+    }
+
+    public void setTempoChanged(boolean tempoChanged) {
+        this.tempoChanged = tempoChanged;
     }
 }

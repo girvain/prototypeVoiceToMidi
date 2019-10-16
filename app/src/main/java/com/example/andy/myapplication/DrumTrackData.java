@@ -73,6 +73,7 @@ public class DrumTrackData {
         } else if (commandData != null && commandData.getCommand() == SET_TEMPO) {
             tempo = commandData.getTempoValue();
             dtdResult.setCommandRecognised(true);
+            dtdResult.setTempoChanged(true);
         }
         else {
             dtdResult.setCommandRecognised(false);
@@ -84,7 +85,7 @@ public class DrumTrackData {
         }
         // set wither there are components on the result so play/stop know to be displayed
         if (drumComponentList.isEmpty()) {
-            dtdResult.setCommponentListEmpty(true);
+            dtdResult.setComponentListEmpty(true);
         }
 
         return dtdResult;

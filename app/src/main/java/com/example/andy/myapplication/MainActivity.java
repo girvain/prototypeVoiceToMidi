@@ -3,12 +3,9 @@ package com.example.andy.myapplication;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
-import android.media.AudioAttributes;
-import android.media.AudioFocusRequest;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.Build;
 import android.speech.RecognizerIntent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,7 +17,6 @@ import android.widget.Toast;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Locale;
-import java.util.concurrent.TimeUnit;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView textView;
     private ImageView playButton;
     private ImageView pauseButton;
+    private TextView tempo;
 
     private AudioManager mAudioManager;
     private AudioManager.OnAudioFocusChangeListener afChangeListener;
@@ -111,8 +108,9 @@ public class MainActivity extends AppCompatActivity {
                 requestAudioFocus();
             }
         });
+        tempo = findViewById(R.id.tempo);
 
-
+        // setup audio focus
         mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
         afChangeListener = new AudioManager.OnAudioFocusChangeListener() {
             @Override
@@ -220,6 +218,9 @@ public class MainActivity extends AppCompatActivity {
                         // has been wiped of it's state.
                         mediaPlayer.reset();
                         pauseButton.setVisibility(View.INVISIBLE);
+                    } else if (dtdResult.isTempoChanged()) {
+                        String parsed = Integer.toString(drumTrackData.getTempo());
+                        tempo.setText(parsed);
                     }
 
                     // Only convert and write to file if there has been a change in the state
@@ -237,7 +238,7 @@ public class MainActivity extends AppCompatActivity {
                     // check for an empty drumComponentList and remove play/pause buttons as
                     // there is nothing to be played or paused when this happens. Otherwise,
                     // display buttons with playPauseVisabilitySetup().
-                    if (dtdResult.isCommponentListEmpty()) {
+                    if (dtdResult.isComponentListEmpty()) {
                         hidePlayPause();
                     } else {
                         playPauseVisabilitySetup();

@@ -20,7 +20,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/lastCommandLabel"
+        app:layout_constraintTop_toBottomOf="@+id/last_command_label"
         app:layout_constraintVertical_bias="0.0" />
 
     <ImageView
@@ -68,7 +68,7 @@
     </FrameLayout>
 
     <TextView
-        android:id="@+id/lastCommandLabel"
+        android:id="@+id/last_command_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="36dp"
@@ -79,7 +79,7 @@
         app:layout_constraintTop_toBottomOf="@+id/tempo" />
 
     <TextView
-        android:id="@+id/tempoLabel"
+        android:id="@+id/tempo_label"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="48dp"
@@ -101,7 +101,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tempoLabel" />
+        app:layout_constraintTop_toBottomOf="@+id/tempo_label" />
 
 
 </android.support.constraint.ConstraintLayout>
