@@ -9,6 +9,9 @@ import android.net.Uri;
 import android.speech.RecognizerIntent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -33,6 +36,22 @@ public class MainActivity extends AppCompatActivity {
 
     private AudioManager mAudioManager;
     private AudioManager.OnAudioFocusChangeListener afChangeListener;
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.item1) {
+            Intent intent = new Intent(this, UserManual.class);
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,6 +84,8 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+
+
 
 
         secondParser = new SecondParser();

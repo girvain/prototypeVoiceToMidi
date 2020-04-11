@@ -1,4 +1,46 @@
 <resources>
     <string name="app_name">Beat Boy</string>
     <string name="tempo_label">Tempo: </string>
+    <string name="user_manual_title">User Manual</string>
+    <string name="user_manual_intro">
+        In order to issue commands to the app you must press and hold
+        the microphone button down and say out loud what you would like to do.
+        This however is restricted to a short series of key words that when combined create a command.
+        The commands can be broken down into: \nVERB, DRUM_NAME, BEAT_POSITION. \nFor example,
+        \"Insert Kick Beat 1\".
+        \nThere is a pause/play button that will function as soon as their is content in the drum loop
+        thats been added from the user. The audio loop can be paused and played from any time after the first
+        command.
+    </string>
+    <string name="command_words">Command Words</string>
+    <string name="usr_man_com_insert_text">This command will tell the app to insert what ever drum specified into the current drum loop.</string>
+    <string name="usr_man_com_insert_title">Insert</string>
+
+    <string name="usr_man_com_delete_title">Delete</string>
+    <string name="usr_man_com_delete_text">This command will tell the app to delete what ever drum specified on whatever beat specified. The word \"Remove\" can also be used</string>
+
+    <string name="usr_man_com_kick_title">Kick</string>
+    <string name="usr_man_com_kick_text">This command will tell the app to either insert or delete a Kick Drum on which ever beat is specified</string>
+
+    <string name="usr_man_com_snare_title">Snare</string>
+    <string name="usr_man_com_snare_text">This command will tell the app to either insert or delete a Snare Drum on which ever beat is specified</string>
+
+    <string name="usr_man_com_hihat_title">Hi-Hat</string>
+    <string name="usr_man_com_hihat_text">This command will tell the app to either insert or delete a Hi-Hat cymbal on which ever beat is specified. This is a "closed hi-hat". For an open Hi-Hat see other command</string>
+
+    <string name="usr_man_com_hihat_open_title">Hi-Hat Open</string>
+    <string name="usr_man_com_hihat_open_text">This command will tell the app to either insert or delete a Hi-Hat Open Drum on which ever beat is specified</string>
+
+    <string name="usr_man_com_beat_title">Beat ...</string>
+    <string name="usr_man_com_beat_text">This command will tell the app to either insert or delete what ever drum specified on a beat within the range of 1 - 4.5. For example, "Insert Kick Beat 1", will insert a kick drum on beat 1.
+        Each number in the range has a 0.5 decimal value before the next Integer so 1, 1.5, 2, 2.5 etc. \nIMPORTANT: The beats are chainable so you can list multiple numbers and the command will perform the action on all beats.
+    For example "Insert Kick Beat 1 2 3 4", will insert a kick on all of these beats</string>
+
+    <string name="usr_man_com_undo_title">Undo</string>
+    <string name="usr_man_com_undo_text">This command will tell the app to undo the last valid command performed</string>
+
+    <string name="usr_man_com_type_verb">VERB</string>
+    <string name="usr_man_com_type_drumname">DRUM NAME</string>
+    <string name="usr_man_com_type_beatpos">BEAT POSITION</string>
+
 </resources>
