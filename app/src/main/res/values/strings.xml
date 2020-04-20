@@ -39,6 +39,9 @@
     <string name="usr_man_com_undo_title">Undo</string>
     <string name="usr_man_com_undo_text">This command will tell the app to undo the last valid command performed</string>
 
+    <string name="usr_man_com_tempo_title">Set Tempo</string>
+    <string name="usr_man_com_tempo_text">This command will set the tempo of the drum loop</string>
+
     <string name="usr_man_com_type_verb">VERB</string>
     <string name="usr_man_com_type_drumname">DRUM NAME</string>
     <string name="usr_man_com_type_beatpos">BEAT POSITION</string>
